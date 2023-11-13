@@ -84,13 +84,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const SizedBox(height: 16.0),
               Row(
                 children: [
-                  buildCodeInputField(),
+                  buildCodeInputField(1),
                   const SizedBox(width: 8.0),
-                  buildCodeInputField(),
+                  buildCodeInputField(2),
                   const SizedBox(width: 8.0),
-                  buildCodeInputField(),
+                  buildCodeInputField(3),
                   const SizedBox(width: 8.0),
-                  buildCodeInputField(),
+                  buildCodeInputField(4),
                 ],
               ),
               const SizedBox(height: 16.0),
@@ -114,9 +114,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ? null
                         : () {
                             resetTimer();
-                            setState(() {
-                              _showTimer = true;
-                            });
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
@@ -137,29 +134,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: const Text('Resend code'),
                   ),
                   ElevatedButton(
-                    onPressed: _codeEntered
-                        ? null
-                        : () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Verification Complete'),
-                                content: const Text(
-                                    'Your verification is complete.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                    onPressed: _codeEntered ? () {} : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 16.0),
+                      // primary: _codeEntered ? const Color(0xFFFF6B6B) : null,
                     ),
                     child: const Text("Finish"),
                   ),
@@ -172,7 +151,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 
-  Widget buildCodeInputField() {
+  Widget buildCodeInputField(int position) {
     return Container(
       width: 50.0,
       child: TextFormField(
@@ -190,6 +169,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         onChanged: (value) {
           setState(() {
             if (value.length == 1) {
+              // Code digit has been entered
               _verificationCode += value;
               if (_verificationCode.length == 4) {
                 _codeEntered = true;
