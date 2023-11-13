@@ -1,6 +1,7 @@
 
 
 import 'package:bookaway/screens/signup_screen.dart';
+import 'package:bookaway/screens/verification_screen.dart';
 
 class AppRoute {
   AppRoute._();
