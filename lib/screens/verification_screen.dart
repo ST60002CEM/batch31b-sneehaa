@@ -1,8 +1,64 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class VerificationScreen extends StatelessWidget {
+class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key});
+
+  @override
+  State<VerificationScreen> createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
+  late Timer _timer;
+  int _secondsRemaining = 60;
+  bool _showTimer = false;
+  bool _isResendButtonDisabled = false;
+  bool _codeEntered = false;
+  String _verificationCode = '';
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_secondsRemaining > 0 && !_codeEntered) {
+          _secondsRemaining--;
+        } else {
+          timer.cancel();
+        }
+      });
+    });
+  }
+
+  void resetTimer() {
+    setState(() {
+      _secondsRemaining = 60;
+      startTimer();
+      _isResendButtonDisabled = true;
+      _showTimer = true;
+      _codeEntered = false;
+      _verificationCode = '';
+    });
+
+    Future.delayed(Duration(seconds: 60), () {
+      if (mounted) {
+        setState(() {
+          _isResendButtonDisabled = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +94,75 @@ class VerificationScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16.0),
+              if (_showTimer)
+                Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      '$_secondsRemaining seconds remaining',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Didn’t get a code?'),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: _isResendButtonDisabled
+                        ? null
+                        : () {
+                            resetTimer();
+                            setState(() {
+                              _showTimer = true;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Code Resent'),
+                                content:
+                                    const Text('Your code has been re-sent.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                     child: const Text('Resend code'),
                   ),
                   ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40.0, vertical: 16.0),
-                      ),
-                      child: const Text("Finish"))
+                    onPressed: _codeEntered
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Verification Complete'),
+                                content: const Text(
+                                    'Your verification is complete.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 16.0),
+                    ),
+                    child: const Text("Finish"),
+                  ),
                 ],
               ),
             ],
@@ -77,7 +187,19 @@ class VerificationScreen extends StatelessWidget {
           border: OutlineInputBorder(),
         ),
         textAlign: TextAlign.center,
-        onChanged: (value) {},
+        onChanged: (value) {
+          setState(() {
+            if (value.length == 1) {
+              _verificationCode += value;
+              if (_verificationCode.length == 4) {
+                _codeEntered = true;
+                _timer.cancel();
+              } else {
+                _codeEntered = false;
+              }
+            }
+          });
+        },
       ),
     );
   }
