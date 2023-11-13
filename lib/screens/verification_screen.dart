@@ -138,7 +138,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 16.0),
-                      // primary: _codeEntered ? const Color(0xFFFF6B6B) : null,
                     ),
                     child: const Text("Finish"),
                   ),
