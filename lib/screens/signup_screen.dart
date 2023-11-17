@@ -29,7 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.asset(
-                    'assets/images/login.png',
+                    'assets/images/signup.png',
                   ),
                 ),
                 const SizedBox(height: 16),
