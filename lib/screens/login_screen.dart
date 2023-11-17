@@ -1,4 +1,5 @@
 import 'package:bookaway/routes/app_route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -91,6 +92,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: const Text('Login'),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: "Don't have an account?",
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        const WidgetSpan(
+                            child: SizedBox(
+                          width: 5,
+                        )),
+                        TextSpan(
+                            text: "Signup",
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(
+                                    context, AppRoute.signupRoute);
+                              })
+                      ]),
+                )
               ],
             ),
           ),
