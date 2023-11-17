@@ -11,6 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {
@@ -30,34 +31,28 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/images/splash.jpg',
-                    fit: BoxFit.cover,
-                    height: double.infinity,
-                    width: double.infinity,
-                  ),
-                  const Positioned(
-                    bottom: 10,
-                    left: 20,
-                    child: Text(
-                      'BookAway',
-                      style: TextStyle(
-                        fontFamily: 'Agbalumo',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 18, 18, 18),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            Image.asset(
+              'assets/images/splash.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
             ),
+            if (showText)
+              Positioned(
+                bottom: MediaQuery.of(context).size.height / 7,
+                child: const Text(
+                  'BookAway',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Agbalumo',
+                    color: Color.fromARGB(255, 90, 123, 172),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
