@@ -10,8 +10,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "BookAway",
-      home: const SplashScreen(),
-      // initialRoute: AppRoute.loginRoute,
+      home: SplashScreen(),
+      initialRoute: AppRoute.splashRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }

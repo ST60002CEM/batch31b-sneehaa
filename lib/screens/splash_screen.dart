@@ -1,12 +1,6 @@
-import 'dart:async';
-import 'package:bookaway/routes/app_route.dart';
 import 'package:flutter/material.dart';
 
-
-
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -15,19 +9,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, AppRoute.loginRoute);
-    });
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        Navigator.pushReplacementNamed(context, '/login');
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text(
-          'BookAway',
-          style: TextStyle(fontSize: 24.0),
-        ),
+        child: Image.asset('assets/images/splash.gif'),
       ),
     );
   }
