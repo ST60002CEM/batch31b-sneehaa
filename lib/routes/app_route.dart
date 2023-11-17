@@ -1,5 +1,4 @@
 
-
 import 'package:bookaway/screens/login_screen.dart';
 
 class AppRoute {
@@ -14,7 +13,7 @@ class AppRoute {
     return {
       // signupRoute: (context) => const SignupScreen(),
       // verificationRoute: (context) => const VerificationScreen(),
-      loginRoute: (context) => const LoginScreen()
+      loginRoute: (context) => const LoginScreen(),
     };
   }
 }

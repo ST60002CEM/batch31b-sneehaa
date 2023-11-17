@@ -37,24 +37,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 18.0),
                 ),
                 const SizedBox(height: 8.0),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: TextFormField(
-                    controller: _usernameController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
+                TextFormField(
+                  controller: _usernameController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your username';
+                    }
+
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -62,31 +60,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 18.0),
                 ),
                 const SizedBox(height: 8.0),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      focusedBorder: OutlineInputBorder(),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      // Perform login logic here
+                      // You can use _usernameController.text and _passwordController.text
+                      // for the username and password entered by the user
                       Navigator.pushNamed(context, AppRoute.dashboardRoute);
                     }
                   },
