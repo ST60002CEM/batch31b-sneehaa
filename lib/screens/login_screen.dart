@@ -25,13 +25,25 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(
+                  height: 40.0,
+                ),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(10.0),
                   child: Image.asset(
                     'assets/images/login.png',
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
+                const Text(
+                  "Welcome Back!",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Color.fromRGBO(39, 163, 163, 1),
+                    fontFamily: 'Agbalumo',
+                  ),
+                ),
+                const SizedBox(height: 50),
                 const Text(
                   "Enter Your Username",
                   style: TextStyle(fontSize: 18.0),
@@ -83,9 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Perform login logic here
-                      // You can use _usernameController.text and _passwordController.text
-                      // for the username and password entered by the user
                       Navigator.pushNamed(context, AppRoute.dashboardRoute);
                     }
                   },
