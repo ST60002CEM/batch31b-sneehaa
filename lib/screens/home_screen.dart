@@ -1,5 +1,4 @@
-
-import 'package:bookaway/widgets/offers.dart';
+import 'package:bookaway/widgets/carousel_slider.dart';
 import 'package:bookaway/widgets/popular_places.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                     )),
               ),
             ),
-            OfferPlaces(),
+            CarouselSliderWidget(),
             PopularPlaces()
           ],
         ),
@@ -57,7 +56,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.favorite), label: 'Favorites'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
-        selectedItemColor: Color.fromARGB(255, 161, 138, 221),
+        selectedItemColor: const Color.fromARGB(255, 161, 138, 221),
         unselectedItemColor: const Color.fromARGB(255, 213, 134, 134),
       ),
     );
