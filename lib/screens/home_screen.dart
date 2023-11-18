@@ -1,4 +1,6 @@
-import 'package:bookaway/widgets/hotelcard.dart';
+
+import 'package:bookaway/widgets/offers.dart';
+import 'package:bookaway/widgets/popular_places.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,42 +18,36 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Discover',
-              style: TextStyle(
-                fontFamily: 'Agbalumo',
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Discover',
+                style: TextStyle(
+                  fontFamily: 'Agbalumo',
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search for hotels...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(22.0),
-                  )),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: 'Search for hotels...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(22.0),
+                    )),
+              ),
             ),
-          ),
-          Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return HotelCard(
-                        hotelName: 'Hotel $index',
-                        imageAsset: 'assets/images/hotel1.jpg',
-                        price: '\$${index + 1} * 50');
-                  }))
-        ],
+            OfferPlaces(),
+            PopularPlaces()
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
