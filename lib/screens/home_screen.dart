@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             CarouselSliderWidget(),
-            PopularPlaces()
+            PopularPlacesWidget()
           ],
         ),
       ),

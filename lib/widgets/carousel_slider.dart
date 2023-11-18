@@ -49,7 +49,7 @@ class CarouselSliderWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           color:
-                              Color.fromARGB(255, 71, 70, 70).withOpacity(0.5),
+                              const Color.fromARGB(255, 71, 70, 70).withOpacity(0.5),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Text(
