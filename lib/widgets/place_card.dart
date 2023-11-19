@@ -1,89 +1,100 @@
 import 'package:flutter/material.dart';
 
-class PlaceCard extends StatelessWidget {
-  final ImageProvider imageAsset;
+class PlaceInfo {
+  final AssetImage imageAsset;
   final String hotelName;
   final String location;
   final int rating;
-  final bool isFavorite;
-  final VoidCallback onFavoritePressed;
 
-  const PlaceCard({
+  PlaceInfo({
     required this.imageAsset,
     required this.hotelName,
     required this.location,
     required this.rating,
-    required this.isFavorite,
-    required this.onFavoritePressed,
+  });
+}
+
+class PlaceCard extends StatelessWidget {
+  final PlaceInfo placeInfo;
+  // final bool isFavorite;
+  // final VoidCallback onFavoritePressed;
+
+  PlaceCard({
+    required this.placeInfo,
+    // required this.isFavorite,
+    // required this.onFavoritePressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    const double cardMargin = 8.0;
-    const double cardPadding = 16.0;
-    const double imageHeight = 150.0;
-    const double iconSize = 20.0;
-
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: cardMargin, vertical: cardMargin),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      elevation: 4.0,
-      child: InkWell(
-        onTap: () {
-          // Handle card tap
-        },
-        child: Container(
-          padding: const EdgeInsets.all(cardPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: imageHeight,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.0),
-                  image: DecorationImage(
-                    image: imageAsset,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+      margin: EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 200.0,
+            child: AspectRatio(
+              aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
+              child: Image(
+                image: placeInfo.imageAsset,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 12.0),
-              Text(
-                hotelName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                location,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8.0),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                    size: iconSize,
-                  ),
-                  const SizedBox(width: 4.0),
-                  Text(rating.toString()),
-                  const Spacer(),
-                  IconButton(
-                    icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
-                    onPressed: onFavoritePressed,
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  placeInfo.hotelName,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  placeInfo.location,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
+                    const SizedBox(width: 4.0),
+                    Text(
+                      placeInfo.rating.toString(),
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Align(
+          //   alignment: Alignment.topRight,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: IconButton(
+          //       icon: Icon(
+          //         isFavorite ? Icons.favorite : Icons.favorite_border,
+          //         color: Colors.red,
+          //       ),
+          //       onPressed: onFavoritePressed,
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
   }
