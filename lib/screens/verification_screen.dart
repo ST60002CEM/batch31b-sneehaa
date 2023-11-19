@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bookaway/routes/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -134,7 +135,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: const Text('Resend code'),
                   ),
                   ElevatedButton(
-                    onPressed: _codeEntered ? () {} : null,
+                    onPressed: _codeEntered
+                        ? () {
+                            Navigator.pushNamed(
+                                context, AppRoute.homepageRoute);
+                          }
+                        : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 40.0, vertical: 16.0),
@@ -168,7 +174,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
         onChanged: (value) {
           setState(() {
             if (value.length == 1) {
-              // Code digit has been entered
               _verificationCode += value;
               if (_verificationCode.length == 4) {
                 _codeEntered = true;
