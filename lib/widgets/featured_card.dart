@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PlaceInfo {
+class FeaturedInfo {
   final AssetImage imageAsset;
   final String hotelName;
   final String location;
   final int rating;
 
-  PlaceInfo({
+  FeaturedInfo({
     required this.imageAsset,
     required this.hotelName,
     required this.location,
@@ -14,11 +14,11 @@ class PlaceInfo {
   });
 }
 
-class PlaceCard extends StatelessWidget {
-  final PlaceInfo placeInfo;
+class FeatureCard extends StatelessWidget {
+  final FeaturedInfo featureInfo;
 
-  PlaceCard({
-    required this.placeInfo,
+  FeatureCard({
+    required this.featureInfo,
   });
 
   static const double cardWidth = 300.0;
@@ -46,7 +46,7 @@ class PlaceCard extends StatelessWidget {
                   topRight: Radius.circular(22.0),
                 ),
                 child: Image(
-                  image: placeInfo.imageAsset,
+                  image: featureInfo.imageAsset,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -57,7 +57,7 @@ class PlaceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    placeInfo.hotelName,
+                    featureInfo.hotelName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -67,7 +67,7 @@ class PlaceCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4.0),
                   Text(
-                    placeInfo.location,
+                    featureInfo.location,
                     style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.grey,
@@ -82,7 +82,7 @@ class PlaceCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4.0),
                       Text(
-                        placeInfo.rating.toString(),
+                        featureInfo.rating.toString(),
                         style: const TextStyle(
                           fontSize: 14.0,
                         ),
