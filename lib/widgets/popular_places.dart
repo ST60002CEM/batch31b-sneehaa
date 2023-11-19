@@ -13,12 +13,24 @@ class PopularPlacesWidget extends StatelessWidget {
       imageAsset: const AssetImage('assets/images/hotel2.jpg'),
       hotelName: 'Hôtel de Paris Opéra',
       location: 'Paris',
-      rating: 3,
+      rating: 2,
+    ),
+    PlaceInfo(
+      imageAsset: const AssetImage('assets/images/hotel1.jpg'),
+      hotelName: 'Emirates Grand Hotel',
+      location: 'Dubai',
+      rating: 1,
+    ),
+    PlaceInfo(
+      imageAsset: const AssetImage('assets/images/hotel2.jpg'),
+      hotelName: 'Cappadocia Caves Hotel',
+      location: 'Turkey',
+      rating: 4,
     ),
     PlaceInfo(
       imageAsset: const AssetImage('assets/images/hotel3.jpg'),
-      hotelName: 'Emirates Grand Hotel',
-      location: 'Dubai',
+      hotelName: 'Hôtel de Paris Opéra',
+      location: 'Paris',
       rating: 3,
     ),
   ];

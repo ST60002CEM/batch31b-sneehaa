@@ -1,4 +1,5 @@
 import 'package:bookaway/widgets/carousel_slider.dart';
+import 'package:bookaway/widgets/featured_destinations.dart';
 import 'package:bookaway/widgets/popular_places.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             CarouselSliderWidget(),
-            PopularPlacesWidget()
+            FeaturedDestinations(),
+            PopularPlacesWidget(),
           ],
         ),
       ),
