@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
 
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 15), () {
         if (mounted) {
           Navigator.pushReplacementNamed(context, '/login');
         }
