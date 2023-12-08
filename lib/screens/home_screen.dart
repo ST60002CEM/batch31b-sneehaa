@@ -1,11 +1,27 @@
+import 'package:bookaway/screens/bottomview/explore_view.dart';
+import 'package:bookaway/screens/bottomview/favorites_view.dart';
+import 'package:bookaway/screens/bottomview/home_view.dart';
+import 'package:bookaway/screens/bottomview/profile_screen.dart';
 import 'package:bookaway/widgets/carousel_slider.dart';
 import 'package:bookaway/widgets/featured_destinations.dart';
 import 'package:bookaway/widgets/popular_places.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  List<Widget> lstBottomScreen = [
+    const HomeView(),
+    const ExploreView(),
+    const FavoritesView(),
+    const ProfileView()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,10 +63,27 @@ class HomeScreen extends StatelessWidget {
             CarouselSliderWidget(),
             FeaturedDestinations(),
             PopularPlacesWidget(),
+            lstBottomScreen[_selectedIndex],
           ],
         ),
       ),
-    
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorites'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        selectedItemColor: const Color.fromARGB(255, 161, 138, 221),
+        unselectedItemColor: const Color.fromARGB(255, 213, 134, 134),
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+      ),
     );
   }
 }
