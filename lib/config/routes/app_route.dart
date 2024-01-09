@@ -1,8 +1,6 @@
 import 'package:bookaway/features/auth/presentation/view/register_view.dart';
 import 'package:bookaway/screens/home_screen.dart';
-import 'package:bookaway/screens/login_screen.dart';
-import 'package:bookaway/screens/splash_screen.dart';
-import 'package:bookaway/screens/verification_screen.dart';
+
 
 class AppRoute {
   AppRoute._();
@@ -16,10 +14,10 @@ class AppRoute {
 
   static getApplicationRoute() {
     return {
-      splashRoute: (context) => SplashScreen(),
+      // splashRoute: (context) => SplashScreen(),
       signupRoute: (context) => const RegisterView(),
-      verificationRoute: (context) => const VerificationScreen(),
-      loginRoute: (context) => const LoginScreen(),
+      // verificationRoute: (context) => const VerificationScreen(),
+      // loginRoute: (context) => const LoginScreen(),
       homepageRoute: (context) => const HomeScreen(),
     };
   }
