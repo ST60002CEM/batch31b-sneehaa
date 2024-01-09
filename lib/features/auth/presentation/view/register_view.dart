@@ -1,125 +1,251 @@
-import 'package:bookaway/config/routes/app_route.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'dart:io';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import 'package:bookaway/core/common/provider/is_network_provider.dart';
+import 'package:bookaway/core/common/snackbar/my_snackbar.dart';
+import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
+import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class RegisterView extends ConsumerStatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _phoneNumberController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+class _RegisterViewState extends ConsumerState<RegisterView> {
+  final _gap = const SizedBox(height: 8);
+
+  final _key = GlobalKey<FormState>();
+  final _fnameController = TextEditingController();
+  final _lnameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  bool isObscure = true;
+
+  File? _img;
+
+  Future<void> _browseImage(ImageSource imageSource) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image != null) {
+        _img = File(image.path);
+        ref.read(authViewModelProvider.notifier).uploadImage(_img!);
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  // Check for the camera permission
+  checkCameraPermission() async {
+    if (await Permission.camera.request().isRestricted ||
+        await Permission.camera.request().isDenied) {
+      await Permission.camera.request();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = ref.watch(connectivityStatusProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (isConnected == ConnectivityStatus.isDisconnected) {
+        showSnackBar(
+          message: 'No Internet Connection',
+          context: context,
+          color: Colors.red,
+        );
+      } else if (isConnected == ConnectivityStatus.isConnected) {
+        showSnackBar(message: 'You are online', context: context);
+      }
+
+      if (ref.watch(authViewModelProvider).showMessage!) {
+        showSnackBar(
+          message: 'Student Registered Successfully',
+          context: context,
+        );
+        ref.read(authViewModelProvider.notifier).resetMessage();
+      }
+    });
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/signup.png',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Enter Your Phone Number",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                const SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _phoneNumberController,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                  ],
-                  decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
+      appBar: AppBar(
+        title: const Text('Register'),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _key,
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.grey[300],
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  checkCameraPermission();
+                                  _browseImage(ImageSource.camera);
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.camera),
+                                label: const Text('Camera'),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  _browseImage(ImageSource.gallery);
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.image),
+                                label: const Text('Gallery'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: _img != null
+                              ? FileImage(_img!)
+                              : const AssetImage('assets/images/profile.png')
+                                  as ImageProvider,
+                        ),
+                      ),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    } else if (value.length != 10) {
-                      return 'Phone number must be 10 digits';
-                    }
-
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  " Create your new password",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                const SizedBox(height: 7.0),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _fnameController,
+                    decoration: const InputDecoration(
+                      labelText: 'First Name',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter first name';
+                      }
+                      return null;
+                    },
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _lnameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Last Name',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter last name';
+                      }
+                      return null;
+                    },
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone No',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter username';
+                      }
+                      return null;
+                    },
+                  ),
+                  _gap,
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: isObscure,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscure ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    },
+                  ),
+                  _gap,
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          final entity = AuthEntity(
+                            fname: _fnameController.text.trim(),
+                            lname: _lnameController.text.trim(),
+                            phone: _phoneController.text.trim(),
+                            image:
+                                ref.read(authViewModelProvider).imageName ?? '',
+                            username: _usernameController.text.trim(),
+                            password: _passwordController.text,
+                          );
+                          ref
+                              .read(authViewModelProvider.notifier)
+                              .registerUser(entity);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                      ),
+                      child: const Text('Register'),
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    } else if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, AppRoute.verificationRoute);
-                    }
-                  },
-                  child: const Text('Next'),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                RichText(
-                  text: TextSpan(
-                      text: "Already have an account?",
-                      style: const TextStyle(color: Colors.black),
-                      children: [
-                        const WidgetSpan(
-                            child: SizedBox(
-                          width: 5,
-                        )),
-                        TextSpan(
-                            text: "Login",
-                            style: const TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.pushNamed(
-                                    context, AppRoute.loginRoute);
-                              })
-                      ]),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -6,7 +6,7 @@ part 'auth_api_model.g.dart';
 @JsonSerializable()
 class AuthApiModel {
   @JsonKey(name: '_id')
-  final String? studentId;
+  final String? userId;
   final String fname;
   final String lname;
   final String? image;
@@ -15,7 +15,7 @@ class AuthApiModel {
   final String? password;
 
   AuthApiModel({
-    this.studentId,
+    this.userId,
     required this.fname,
     required this.lname,
     this.image,
@@ -32,7 +32,7 @@ class AuthApiModel {
   // To entity
   factory AuthApiModel.toEntity(AuthApiModel apiModel) {
     return AuthApiModel(
-      studentId: apiModel.studentId,
+      userId: apiModel.userId,
       fname: apiModel.fname,
       lname: apiModel.lname,
       image: apiModel.image,
@@ -45,7 +45,7 @@ class AuthApiModel {
   // From entity
   factory AuthApiModel.fromEntity(AuthEntity entity) {
     return AuthApiModel(
-      studentId: entity.studentId,
+      userId: entity.studentId,
       fname: entity.fname,
       lname: entity.lname,
       image: entity.image,
