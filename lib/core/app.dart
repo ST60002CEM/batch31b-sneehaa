@@ -1,5 +1,5 @@
-import 'package:bookaway/app/themes/themes.dart';
-import 'package:bookaway/routes/app_route.dart';
+import 'package:bookaway/config/themes/themes.dart';
+import 'package:bookaway/config/routes/app_route.dart';
 import 'package:bookaway/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 

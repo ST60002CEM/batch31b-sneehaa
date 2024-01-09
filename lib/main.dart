@@ -1,4 +1,4 @@
-import 'package:bookaway/app/app.dart';
+import 'package:bookaway/core/app.dart';
 import 'package:flutter/material.dart';
 
 void main() {

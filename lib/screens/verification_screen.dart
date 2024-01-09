@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:bookaway/routes/app_route.dart';
+import 'package:bookaway/config/routes/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
