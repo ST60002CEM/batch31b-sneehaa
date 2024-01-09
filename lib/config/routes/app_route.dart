@@ -1,6 +1,6 @@
+import 'package:bookaway/features/auth/presentation/view/register_view.dart';
 import 'package:bookaway/screens/home_screen.dart';
 import 'package:bookaway/screens/login_screen.dart';
-import 'package:bookaway/screens/signup_screen.dart';
 import 'package:bookaway/screens/splash_screen.dart';
 import 'package:bookaway/screens/verification_screen.dart';
 
