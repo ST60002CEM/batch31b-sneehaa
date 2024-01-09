@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       title: "BookAway",
       home: SplashScreen(),
       theme: getApplicationTheme(),
-      initialRoute: AppRoute.splashRoute,
+      initialRoute: AppRoute.signupRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }

@@ -4,6 +4,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera for image capture</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library for image selection</string>
 	<key>CFBundleDisplayName</key>
 	<string>Bookaway</string>
 	<key>CFBundleExecutable</key>

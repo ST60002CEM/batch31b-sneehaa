@@ -17,7 +17,7 @@ class RegisterView extends ConsumerStatefulWidget {
 }
 
 class _RegisterViewState extends ConsumerState<RegisterView> {
-  final _gap = const SizedBox(height: 8);
+  final _gap = const SizedBox(height: 20);
 
   final _key = GlobalKey<FormState>();
   final _fnameController = TextEditingController();
@@ -80,6 +80,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
         title: const Text('Register'),
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -91,7 +92,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   InkWell(
                     onTap: () {
                       showModalBottomSheet(
-                        backgroundColor: Colors.grey[300],
+                        backgroundColor: const Color.fromRGBO(255, 255, 255, 0),
                         context: context,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
@@ -105,6 +106,10 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF6B6B),
+                                  foregroundColor: Colors.white,
+                                ),
                                 onPressed: () {
                                   checkCameraPermission();
                                   _browseImage(ImageSource.camera);
@@ -114,6 +119,10 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                                 label: const Text('Camera'),
                               ),
                               ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF6B6B),
+                                  foregroundColor: Colors.white,
+                                ),
                                 onPressed: () {
                                   _browseImage(ImageSource.gallery);
                                   Navigator.pop(context);
@@ -144,8 +153,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _fnameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       labelText: 'First Name',
+                      labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Color(0xFFFF6B6B), width: 2.0),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -157,8 +176,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   _gap,
                   TextFormField(
                     controller: _lnameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       labelText: 'Last Name',
+                      labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Color(0xFFFF6B6B), width: 2.0),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -170,8 +199,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   _gap,
                   TextFormField(
                     controller: _phoneController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       labelText: 'Phone No',
+                      labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Color(0xFFFF6B6B), width: 2.0),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -183,8 +222,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   _gap,
                   TextFormField(
                     controller: _usernameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       labelText: 'Username',
+                      labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Color(0xFFFF6B6B), width: 2.0),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -198,7 +247,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     controller: _passwordController,
                     obscureText: isObscure,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       labelText: 'Password',
+                      labelStyle: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60)),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Color(0xFFFF6B6B), width: 2.0),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           isObscure ? Icons.visibility : Icons.visibility_off,
@@ -238,8 +297,10 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0)),
+                        backgroundColor: const Color(0xFFFF6B6B),
+                        foregroundColor: Colors.white,
                       ),
                       child: const Text('Register'),
                     ),
