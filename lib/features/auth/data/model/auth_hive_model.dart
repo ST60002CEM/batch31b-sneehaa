@@ -59,7 +59,7 @@ class AuthHiveModel extends Equatable {
 
   // Convert Hive Object to Entity
   static AuthEntity toEntity(AuthHiveModel hiveModel) => AuthEntity(
-        studentId: hiveModel.userId,
+        userId: hiveModel.userId,
         fname: hiveModel.fname,
         lname: hiveModel.lname,
         phone: hiveModel.phone,
