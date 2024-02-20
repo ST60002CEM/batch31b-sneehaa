@@ -3,7 +3,7 @@ import 'package:bookaway/config/routes/app_route.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "BookAway",
       theme: getApplicationTheme(),
-      initialRoute: AppRoute.signupRoute,
+      initialRoute: AppRoute.homepageRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }
