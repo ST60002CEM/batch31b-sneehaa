@@ -1,88 +1,92 @@
-import 'package:bookaway/screens/bottomview/explore_view.dart';
-import 'package:bookaway/screens/bottomview/favorites_view.dart';
-import 'package:bookaway/screens/bottomview/home_view.dart';
-import 'package:bookaway/screens/bottomview/profile_screen.dart';
-import 'package:bookaway/widgets/carousel_slider.dart';
-import 'package:bookaway/widgets/featured_destinations.dart';
-import 'package:bookaway/widgets/popular_places.dart';
+import 'package:bookaway/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(children: [
+          Container(
+            height: double.infinity,
+            margin: EdgeInsets.only(top: size.height * 0.25),
+            color: Colors.white,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [_HeaderSection(), _SearchCard()],
+            ),
+          )
+        ]),
+      ),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  List<Widget> lstBottomScreen = [
-    const HomeView(),
-    const ExploreView(),
-    const FavoritesView(),
-    const ProfileView()
-  ];
+class _HeaderSection extends StatelessWidget {
+  const _HeaderSection({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Eplore Hotels'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Discover',
-                style: TextStyle(
-                  fontFamily: 'Agbalumo',
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search for hotels...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(22.0),
-                    )),
-              ),
-            ),
-            CarouselSliderWidget(),
-            FeaturedDestinations(),
-            PopularPlacesWidget(),
-            lstBottomScreen[_selectedIndex],
+            CircleAvatar(
+                radius: 25.0,
+                backgroundImage: AssetImage('assets/images/profile.png')),
+            CustomIconButton(
+              icon: Icon(Icons.notifications),
+            )
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            "Welcome Again",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 28, color: Colors.white),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _SearchCard extends StatelessWidget {
+  const _SearchCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.grey)),
+      child: const Column(
+        children: [
+          Row(
+            children: [
+              Icon(Icons.location_on_outlined),
+              SizedBox(
+                width: 20.0,
+              ),
+              Flexible(
+                  child: TextField(
+                decoration: InputDecoration(label: Text("From?",)),
+              ))
+            ],
+          )
         ],
-        selectedItemColor: const Color.fromARGB(255, 161, 138, 221),
-        unselectedItemColor: const Color.fromARGB(255, 213, 134, 134),
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
       ),
     );
   }
