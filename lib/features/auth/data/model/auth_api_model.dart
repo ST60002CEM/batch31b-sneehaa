@@ -45,7 +45,7 @@ class AuthApiModel {
   // From entity
   factory AuthApiModel.fromEntity(AuthEntity entity) {
     return AuthApiModel(
-      userId: entity.studentId,
+      userId: entity.userId,
       fname: entity.fname,
       lname: entity.lname,
       image: entity.image,
