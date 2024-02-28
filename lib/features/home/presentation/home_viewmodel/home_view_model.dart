@@ -24,5 +24,5 @@ class HotelViewModel extends StateNotifier<HotelState> {
       (r) => state = state.copyWith(isLoading: false, hotels: r, error: null),
     );
   }
-}
 
+}

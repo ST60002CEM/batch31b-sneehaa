@@ -8,7 +8,6 @@ class HotelEntity extends Equatable {
   final String hotelCategory;
   final String? hotelImageUrl;
 
-
   const HotelEntity({
     this.hotelId,
     required this.hotelName,
