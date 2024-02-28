@@ -2,7 +2,7 @@
 
 import 'package:bookaway/features/auth/presentation/view/login_view.dart';
 import 'package:bookaway/features/auth/presentation/view/register_view.dart';
-import 'package:bookaway/screens/bottomview/home_view.dart';
+import 'package:bookaway/features/home/presentation/view/home_view.dart';
 
 class AppRoute {
   AppRoute._();
@@ -16,7 +16,7 @@ class AppRoute {
     return {
       // splashRoute: (context) => const SplashView(),
       loginRoute: (context) => const LoginView(),
-      homeRoute: (context) => const HomeView(),
+      homeRoute: (context) =>  HomePage(),
       registerRoute: (context) => const RegisterView(),
     };
   }
