@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "BookAway",
       theme: getApplicationTheme(),
-      initialRoute: AppRoute.signupRoute,
+      initialRoute: AppRoute.registerRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }

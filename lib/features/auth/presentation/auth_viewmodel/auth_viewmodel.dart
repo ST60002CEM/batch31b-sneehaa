@@ -46,7 +46,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
           showMessage: true,
           error: null,
         );
-        Navigator.popAndPushNamed(context, AppRoute.homepageRoute);
+        Navigator.popAndPushNamed(context, AppRoute.homeRoute);
       },
     );
   }

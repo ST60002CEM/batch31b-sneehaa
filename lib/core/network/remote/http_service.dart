@@ -2,9 +2,10 @@ import 'package:bookaway/config/constants/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
 import 'dio_error_interceptor.dart';
 
-final httpServiceProvider = Provider.autoDispose<Dio>(
+final httpServiceProvider = Provider<Dio>(
   (ref) => HttpService(Dio()).dio,
 );
 

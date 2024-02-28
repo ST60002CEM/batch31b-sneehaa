@@ -1,195 +1,158 @@
-import 'package:bookaway/core/common/provider/is_network_provider.dart';
-import 'package:bookaway/core/common/snackbar/my_snackbar.dart';
 import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
 import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmodel.dart';
+import 'package:bookaway/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
-  const RegisterView({super.key});
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _RegisterViewState();
+  ConsumerState<RegisterView> createState() => _RegisterViewState();
 }
 
 class _RegisterViewState extends ConsumerState<RegisterView> {
-  final _gap = const SizedBox(height: 20);
-
-  final _key = GlobalKey<FormState>();
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  bool isObscure = true;
+  final _formKey = GlobalKey<FormState>();
+  final _gap = const SizedBox(height: 8);
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _isObscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    final isConnected = ref.watch(connectivityStatusProvider);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (isConnected == ConnectivityStatus.isDisconnected) {
-        showSnackBar(
-          message: 'No Internet Connection',
-          context: context,
-          color: Colors.red,
-        );
-      } else if (isConnected == ConnectivityStatus.isConnected) {
-        showSnackBar(message: 'You are online', context: context);
-      }
-
-      if (ref.watch(authViewModelProvider).showMessage!) {
-        showSnackBar(
-          message: 'User Registered Successfully',
-          context: context,
-        );
-        ref.read(authViewModelProvider.notifier).resetMessage();
-      }
-    });
+    double padding = MediaQuery.of(context).size.width * 0.1;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _key,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      labelText: 'First Name',
-                      labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 60, 60, 60)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Color(0xFFFF6B6B), width: 2.0),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter first name';
-                      }
-                      return null;
-                    },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Image.asset('assets/images/logo.png',
+                    height: MediaQuery.of(context).size.width * 0.5),
+                const SizedBox(height: 48),
+                TextFormField(
+                  controller: firstNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'firstName',
+                    prefixIcon: Icon(Icons.person),
                   ),
-                  _gap,
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      labelText: 'Last Name',
-                      labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 60, 60, 60)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Color(0xFFFF6B6B), width: 2.0),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter last name';
-                      }
-                      return null;
-                    },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter your firstName';
+                    }
+                    return null;
+                  },
+                ),
+                _gap,
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'lastName',
+                    prefixIcon: Icon(Icons.person),
                   ),
-                  _gap,
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 60, 60, 60)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Color(0xFFFF6B6B), width: 2.0),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter email';
-                      }
-                      return null;
-                    },
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter your lastname';
+                    }
+                    return null;
+                  },
+                ),
+                _gap,
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
                   ),
-                  _gap,
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: isObscure,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      labelText: 'Password',
-                      labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 60, 60, 60)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Color(0xFFFF6B6B), width: 2.0),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isObscure ? Icons.visibility : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isObscure = !isObscure;
-                          });
-                        },
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter password';
-                      }
-                      return null;
-                    },
-                  ),
-                  _gap,
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                _gap,
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: _isObscurePassword,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isObscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                       onPressed: () {
-                        if (_key.currentState!.validate()) {
-                          final userData= AuthEntity(
-                            firstName: _firstNameController.text.trim(),
-                            lastName: _lastNameController.text.trim(),
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text,
-                          );
-                          ref
-                              .read(authViewModelProvider.notifier)
-                              .register(userData);
-                        }
+                        setState(() {
+                          _isObscurePassword = !_isObscurePassword;
+                        });
                       },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0)),
-                        backgroundColor: const Color(0xFFFF6B6B),
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Register'),
                     ),
                   ),
-                ],
-              ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 24),
+                _gap,
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final userData = AuthEntity(
+                        firstName: firstNameController.text.trim(),
+                        lastName: lastNameController.text.trim(),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+                      ref
+                          .read(authViewModelProvider.notifier)
+                          .register(userData);
+
+                      // Navigate to login page
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoginView(),
+                      ));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFFFF6F6F),
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text('Register'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const LoginView(),
+                    ));
+                  },
+                  child: const Text("Already have an account? Login"),
+                ),
+              ],
             ),
           ),
         ),
