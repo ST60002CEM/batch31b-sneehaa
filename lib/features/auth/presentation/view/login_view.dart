@@ -3,9 +3,8 @@ import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmode
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class LoginView extends ConsumerStatefulWidget {
-  const LoginView({super.key});
+  const LoginView({Key? key}) : super(key: key);
 
   @override
   ConsumerState<LoginView> createState() => _LoginViewState();
@@ -88,11 +87,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           context,
                           _emailController.text,
                           _passwordController.text);
+
+                      // Show Snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('User logged in successfully'),
+                          backgroundColor: Color(0xFFFF8B8B),
+                        ),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: const Color(0xFFFF6F6F),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -110,7 +117,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoute.registerRoute);
                   },
-                  child: const Text("Don't have an account? Sign up"),
+                  child: const Text(
+                    "Don't have an account? Sign up",
+                    style: TextStyle(color: Color(0xFFFF6F6F)),
+                  ),
                 ),
               ],
             ),

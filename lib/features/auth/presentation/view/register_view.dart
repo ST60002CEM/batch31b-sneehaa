@@ -128,6 +128,13 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                           .read(authViewModelProvider.notifier)
                           .register(userData);
 
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('User created successfully'),
+                          backgroundColor: Color(0xFFFF8B8B),
+                        ),
+                      );
+
                       // Navigate to login page
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const LoginView(),
