@@ -1,59 +1,55 @@
-import 'dart:io';
-
-
+import 'package:bookaway/config/routes/app_route.dart';
 import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
+import 'package:bookaway/features/auth/domain/use_cases/login_usecase.dart';
 import 'package:bookaway/features/auth/domain/use_cases/register_usecase.dart';
-import 'package:bookaway/features/auth/domain/use_cases/upload_image_usecase.dart';
 import 'package:bookaway/features/auth/presentation/state/auth_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>(
-  (ref) => AuthViewModel(
-    ref.read(registerUseCaseProvider),
-    ref.read(uploadImageUseCaseProvider),
-  ),
-);
+final authViewModelProvider =
+    StateNotifierProvider<AuthViewModel, AuthState>((ref) {
+  return AuthViewModel(
+    ref.read(registerUseCaseProvider), ref.read(loginUseCaseProvider)
+  );
+});
 
 class AuthViewModel extends StateNotifier<AuthState> {
-  final RegisterUseCase _registerUseCase;
-  final UploadImageUseCase _uploadImageUsecase;
+  final RegisterUseCase registerUseCase;
+  final LoginUseCase loginUseCase;
 
-  AuthViewModel(
-    this._registerUseCase,
-    this._uploadImageUsecase,
-  ) : super(AuthState.initial());
+  AuthViewModel(this.registerUseCase, this.loginUseCase) : super(AuthState.initial());
 
-  Future<void> uploadImage(File? file) async {
+  Future<void> register(AuthEntity authEntity) async {
     state = state.copyWith(isLoading: true);
-    var data = await _uploadImageUsecase.uploadProfilePicture(file!);
-    data.fold(
-      (l) {
-        state = state.copyWith(isLoading: false, error: l.error);
-      },
-      (imageName) {
-        state = state.copyWith(
-          isLoading: false,
-          error: null,
-          imageName: imageName,
-        );
-      },
-    );
-  }
-
-  Future<void> registerUser(AuthEntity entity) async {
-    state = state.copyWith(isLoading: true);
-    final result = await _registerUseCase.registerUser(entity);
+    final result = await registerUseCase.registerUser(authEntity);
     state = state.copyWith(isLoading: false);
     result.fold(
       (failure) => state = state.copyWith(error: failure.error),
       (success) => state = state.copyWith(isLoading: false, showMessage: true),
     );
-
     resetMessage();
   }
-
-
+  
+  Future<void> loginUser(
+      BuildContext context, String email, String password) async {
+    state = state.copyWith(isLoading: true);
+    final result = await loginUseCase.loginUser(email, password);
+    state = state.copyWith(isLoading: false);
+    result.fold(
+      (failure) => state = state.copyWith(
+        error: failure.error,
+        showMessage: true,
+      ),
+      (success) {
+        state = state.copyWith(
+          isLoading: false,
+          showMessage: true,
+          error: null,
+        );
+        Navigator.popAndPushNamed(context, AppRoute.homepageRoute);
+      },
+    );
+  }
 
   void reset() {
     state = state.copyWith(

@@ -9,45 +9,40 @@ class AuthApiModel {
   final String? userId;
   final String firstName;
   final String lastName;
-  final String? image;
   final String email;
-  final String? password;
+  final String password;
 
-  AuthApiModel({
-    this.userId,
-    required this.firstName,
-    required this.lastName,
-    this.image,
-    required this.email,
-    this.password,
-  });
+  AuthApiModel(
+      {required this.userId,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.password});
 
+  //toEntity
+  factory AuthApiModel.toEntity(AuthApiModel apiModel) {
+    return AuthApiModel(
+        userId: apiModel.userId,
+        firstName: apiModel.firstName,
+        lastName: apiModel.lastName,
+        email: apiModel.email,
+        password: apiModel.password);
+  }
+
+  //From Entiry
+  factory AuthApiModel.fromEntity(AuthEntity authEntity) {
+    return AuthApiModel(
+        userId: authEntity.userId,
+        firstName: authEntity.firstName,
+        lastName: authEntity.lastName,
+        email: authEntity.email,
+        password: authEntity.password);
+  }
+
+  //FromJSON
   factory AuthApiModel.fromJson(Map<String, dynamic> json) =>
       _$AuthApiModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
-
-  // To entity
-  factory AuthApiModel.toEntity(AuthApiModel apiModel) {
-    return AuthApiModel(
-      userId: apiModel.userId,
-      firstName: apiModel.firstName,
-      lastName: apiModel.lastName,
-      image: apiModel.image,
-      email: apiModel.email,
-      password: apiModel.password,
-    );
-  }
-
-  // From entity
-  factory AuthApiModel.fromEntity(AuthEntity entity) {
-    return AuthApiModel(
-      userId: entity.userId,
-      firstName: entity.firstName,
-      lastName: entity.lastName,
-      image: entity.image,
-      email: entity.email,
-      password: entity.password,
-    );
-  }
+      //ToJSON
+    Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 }

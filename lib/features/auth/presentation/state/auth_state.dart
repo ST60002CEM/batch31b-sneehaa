@@ -4,12 +4,8 @@ class AuthState {
   final String? imageName;
   final bool? showMessage;
 
-  AuthState({
-    required this.isLoading,
-    this.error,
-    this.imageName,
-    this.showMessage,
-  });
+  AuthState(
+      {required this.isLoading, this.error, this.imageName, this.showMessage});
 
   factory AuthState.initial() {
     return AuthState(
@@ -23,7 +19,7 @@ class AuthState {
   AuthState copyWith({
     bool? isLoading,
     String? error,
-    String? imageName,
+    String?  imageName,
     bool? showMessage,
   }) {
     return AuthState(

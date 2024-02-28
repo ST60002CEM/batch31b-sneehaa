@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:bookaway/core/common/provider/is_network_provider.dart';
 import 'package:bookaway/core/common/snackbar/my_snackbar.dart';
 import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
 import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
@@ -27,30 +23,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   bool isObscure = true;
 
-  File? _img;
-
-  Future<void> _browseImage(ImageSource imageSource) async {
-    try {
-      final image = await ImagePicker().pickImage(source: imageSource);
-      if (image != null) {
-        _img = File(image.path);
-        ref.read(authViewModelProvider.notifier).uploadImage(_img!);
-      } else {
-        return;
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  // Check for the camera permission
-  checkCameraPermission() async {
-    if (await Permission.camera.request().isRestricted ||
-        await Permission.camera.request().isDenied) {
-      await Permission.camera.request();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final isConnected = ref.watch(connectivityStatusProvider);
@@ -67,7 +39,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
       if (ref.watch(authViewModelProvider).showMessage!) {
         showSnackBar(
-          message: 'Student Registered Successfully',
+          message: 'User Registered Successfully',
           context: context,
         );
         ref.read(authViewModelProvider.notifier).resetMessage();
@@ -88,68 +60,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               key: _key,
               child: Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: const Color.fromRGBO(255, 255, 255, 0),
-                        context: context,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        builder: (context) => Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFF6B6B),
-                                  foregroundColor: Colors.white,
-                                ),
-                                onPressed: () {
-                                  checkCameraPermission();
-                                  _browseImage(ImageSource.camera);
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.camera),
-                                label: const Text('Camera'),
-                              ),
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFF6B6B),
-                                  foregroundColor: Colors.white,
-                                ),
-                                onPressed: () {
-                                  _browseImage(ImageSource.gallery);
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.image),
-                                label: const Text('Gallery'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 150,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: _img != null
-                              ? FileImage(_img!)
-                              : const AssetImage('assets/images/profile.png')
-                                  as ImageProvider,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
@@ -202,7 +112,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      labelText: 'Phone No',
+                      labelText: 'Email',
                       labelStyle: const TextStyle(
                           color: Color.fromARGB(255, 60, 60, 60)),
                       focusedBorder: OutlineInputBorder(
@@ -213,12 +123,11 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter phone number';
+                        return 'Please enter email';
                       }
                       return null;
                     },
                   ),
-                  _gap,
                   _gap,
                   TextFormField(
                     controller: _passwordController,
@@ -259,17 +168,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_key.currentState!.validate()) {
-                          final entity = AuthEntity(
+                          final userData= AuthEntity(
                             firstName: _firstNameController.text.trim(),
                             lastName: _lastNameController.text.trim(),
                             email: _emailController.text.trim(),
-                            image:
-                                ref.read(authViewModelProvider).imageName ?? '',
                             password: _passwordController.text,
                           );
                           ref
                               .read(authViewModelProvider.notifier)
-                              .registerUser(entity);
+                              .register(userData);
                         }
                       },
                       style: ElevatedButton.styleFrom(
