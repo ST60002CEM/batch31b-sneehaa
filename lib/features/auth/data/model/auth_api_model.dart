@@ -7,20 +7,18 @@ part 'auth_api_model.g.dart';
 class AuthApiModel {
   @JsonKey(name: '_id')
   final String? userId;
-  final String fname;
-  final String lname;
+  final String firstName;
+  final String lastName;
   final String? image;
-  final String phone;
-  final String username;
+  final String email;
   final String? password;
 
   AuthApiModel({
     this.userId,
-    required this.fname,
-    required this.lname,
+    required this.firstName,
+    required this.lastName,
     this.image,
-    required this.phone,
-    required this.username,
+    required this.email,
     this.password,
   });
 
@@ -33,11 +31,10 @@ class AuthApiModel {
   factory AuthApiModel.toEntity(AuthApiModel apiModel) {
     return AuthApiModel(
       userId: apiModel.userId,
-      fname: apiModel.fname,
-      lname: apiModel.lname,
+      firstName: apiModel.firstName,
+      lastName: apiModel.lastName,
       image: apiModel.image,
-      phone: apiModel.phone,
-      username: apiModel.username,
+      email: apiModel.email,
       password: apiModel.password,
     );
   }
@@ -46,13 +43,11 @@ class AuthApiModel {
   factory AuthApiModel.fromEntity(AuthEntity entity) {
     return AuthApiModel(
       userId: entity.userId,
-      fname: entity.fname,
-      lname: entity.lname,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
       image: entity.image,
-      phone: entity.phone,
-      username: entity.username,
+      email: entity.email,
       password: entity.password,
     );
   }
 }
-  

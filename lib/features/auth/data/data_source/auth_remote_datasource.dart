@@ -58,11 +58,10 @@ class AuthRemoteDataSource {
       Response response = await dio.post(
         ApiEndpoints.register,
         data: {
-          "fname": apiModel.fname,
-          "lname": apiModel.lname,
+          "firstName": apiModel.firstName,
+          "lastName": apiModel.lastName,
           "image": apiModel.image,
-          "phone": apiModel.phone,
-          "username": apiModel.username,
+          "email": apiModel.email,
           "password": apiModel.password,
         },
       );

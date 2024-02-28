@@ -20,10 +20,9 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   final _gap = const SizedBox(height: 20);
 
   final _key = GlobalKey<FormState>();
-  final _fnameController = TextEditingController();
-  final _lnameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _usernameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   bool isObscure = true;
@@ -152,7 +151,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    controller: _fnameController,
+                    controller: _firstNameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -175,7 +174,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   ),
                   _gap,
                   TextFormField(
-                    controller: _lnameController,
+                    controller: _lastNameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -198,7 +197,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   ),
                   _gap,
                   TextFormField(
-                    controller: _phoneController,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
@@ -220,28 +219,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     },
                   ),
                   _gap,
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      labelText: 'Username',
-                      labelStyle: const TextStyle(
-                          color: Color.fromARGB(255, 60, 60, 60)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Color(0xFFFF6B6B), width: 2.0),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter username';
-                      }
-                      return null;
-                    },
-                  ),
                   _gap,
                   TextFormField(
                     controller: _passwordController,
@@ -283,12 +260,11 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                       onPressed: () {
                         if (_key.currentState!.validate()) {
                           final entity = AuthEntity(
-                            fname: _fnameController.text.trim(),
-                            lname: _lnameController.text.trim(),
-                            phone: _phoneController.text.trim(),
+                            firstName: _firstNameController.text.trim(),
+                            lastName: _lastNameController.text.trim(),
+                            email: _emailController.text.trim(),
                             image:
                                 ref.read(authViewModelProvider).imageName ?? '',
-                            username: _usernameController.text.trim(),
                             password: _passwordController.text,
                           );
                           ref

@@ -13,27 +13,23 @@ class AuthHiveModel extends Equatable {
   final String userId;
 
   @HiveField(1)
-  final String fname;
+  final String firstName;
 
   @HiveField(2)
-  final String lname;
+  final String lastName;
 
   @HiveField(3)
-  final String phone;
+  final String email;
 
-  @HiveField(6)
-  final String username;
-
-  @HiveField(7)
+  @HiveField(4)
   final String password;
 
   // Constructor
   AuthHiveModel({
     String? userId,
-    required this.fname,
-    required this.lname,
-    required this.phone,
-    required this.username,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
     required this.password,
   }) : userId = userId ?? const Uuid().v4();
 
@@ -41,44 +37,40 @@ class AuthHiveModel extends Equatable {
   AuthHiveModel.empty()
       : this(
           userId: '',
-          fname: '',
-          lname: '',
-          phone: '',
-          username: '',
+          firstName: '',
+          lastName: '',
+          email: '',
           password: '',
         );
 
   // Convert Entity to Hive Object
   factory AuthHiveModel.toHiveModel(AuthEntity entity) => AuthHiveModel(
-        fname: entity.fname,
-        lname: entity.lname,
-        phone: entity.phone,
-        username: entity.username,
+        firstName: entity.firstName,
+        lastName: entity.lastName,
+        email: entity.email,
         password: entity.password,
       );
 
   // Convert Hive Object to Entity
   static AuthEntity toEntity(AuthHiveModel hiveModel) => AuthEntity(
         userId: hiveModel.userId,
-        fname: hiveModel.fname,
-        lname: hiveModel.lname,
-        phone: hiveModel.phone,
-        username: hiveModel.username,
+        firstName: hiveModel.firstName,
+        lastName: hiveModel.lastName,
+        email: hiveModel.email,
         password: hiveModel.password,
       );
 
   @override
   String toString() {
-    return 'userId: $userId, fname: $fname, lname: $lname, phone: $phone, username: $username, password: $password';
+    return 'userId: $userId, firstName: $firstName, lastName: $lastName, email: $email, password: $password';
   }
 
   @override
   List<Object?> get props => [
         userId,
-        fname,
-        lname,
-        phone,
-        username,
+        firstName,
+        lastName,
+        email,
         password,
       ];
 }
