@@ -1,17 +1,18 @@
-import 'package:bookaway/features/home/domain/entity/home_entity.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'home_api_model.g.dart';
+import '../../domain/entity/hotel_details_entity.dart';
 
+part 'hotel_api_model.g.dart';
 
-final hotelApiModelProvider = Provider<HotelApiModel>(
-  (ref) => const HotelApiModel.empty(),
+final hotelApiModelProvider = Provider<HotelDetailsApiModel>(
+  (ref) => const HotelDetailsApiModel.empty(),
 );
 
 @JsonSerializable()
-class HotelApiModel extends Equatable {
+class HotelDetailsApiModel extends Equatable {
   @JsonKey(name: '_id')
   final String? hotelId;
   final String hotelName;
@@ -20,7 +21,7 @@ class HotelApiModel extends Equatable {
   final String hotelCategory;
   final String? hotelImageUrl;
 
-  const HotelApiModel({
+  const HotelDetailsApiModel({
     required this.hotelId,
     required this.hotelName,
     required this.hotelPrice,
@@ -29,7 +30,7 @@ class HotelApiModel extends Equatable {
     this.hotelImageUrl,
   });
 
-  const HotelApiModel.empty()
+  const HotelDetailsApiModel.empty()
       : hotelId = '',
         hotelName = '',
         hotelPrice = 0.0,
@@ -37,34 +38,32 @@ class HotelApiModel extends Equatable {
         hotelCategory = '',
         hotelImageUrl = '';
 
-  Map<String, dynamic> toJson() => _$HotelApiModelToJson(this);
+  Map<String, dynamic> toJson() => _$HotelDetailsApiModelToJson(this);
 
-  factory HotelApiModel.fromJson(Map<String, dynamic> json) =>
-      _$HotelApiModelFromJson(json);
+  factory HotelDetailsApiModel.fromJson(Map<String, dynamic> json) =>
+      _$HotelDetailsApiModelFromJson(json);
 
   // Convert API Object to Entity
-  HotelEntity toEntity() => HotelEntity(
-        hotelId: hotelId,
+  HotelDetails toEntity() => HotelDetails(
+        hotelId: hotelId.toString(),
         hotelName: hotelName,
         hotelPrice: hotelPrice,
         hotelDescription: hotelDescription,
         hotelCategory: hotelCategory,
-        hotelImageUrl: hotelImageUrl,
+        hotelImageUrl: hotelImageUrl.toString(),
       );
 
-  // Convert Entity to API Object
-  HotelApiModel fromEntity(HotelEntity entity) => HotelApiModel(
-        hotelId: entity.hotelId ?? '',
-        hotelName: entity.hotelName,
-        hotelPrice: entity.hotelPrice,
-        hotelDescription: entity.hotelDescription,
-        hotelCategory: entity.hotelCategory,
-        hotelImageUrl: entity.hotelImageUrl,
-      );
-
-  // Convert API List to Entity List
-  List<HotelEntity> toEntityList(List<HotelApiModel> models) =>
-      models.map((model) => model.toEntity()).toList();
+  // Factory constructor to create HotelApiModel from a map
+  factory HotelDetailsApiModel.fromMap(Map<String, dynamic> map) {
+    return HotelDetailsApiModel(
+      hotelId: map['hotelId'],
+      hotelName: map['hotelName'],
+      hotelPrice: map['hotelPrice'],
+      hotelDescription: map['hotelDescription'],
+      hotelCategory: map['hotelCategory'],
+      hotelImageUrl: map['hotelImageUrl'],
+    );
+  }
 
   @override
   List<Object?> get props => [

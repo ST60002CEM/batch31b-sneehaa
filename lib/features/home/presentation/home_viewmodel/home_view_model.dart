@@ -20,7 +20,7 @@ class HotelViewModel extends StateNotifier<HotelState> {
     var data = await hotelUseCase.getAllHotels();
 
     data.fold(
-      (l) => state = state.copyWith(isLoading: false, error: l.error),
+      (l) => state = state.copyWith(isLoading: false, error: l.error,),
       (r) => state = state.copyWith(isLoading: false, hotels: r, error: null),
     );
   }

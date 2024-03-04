@@ -1,8 +1,9 @@
 import 'package:bookaway/features/home/presentation/view/booking_search.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bookaway/features/home/domain/entity/home_entity.dart';
 import 'package:bookaway/features/home/presentation/home_viewmodel/home_view_model.dart';
+import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -45,11 +46,17 @@ class HomePage extends ConsumerWidget {
                   ),
                   if (featuredHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Featured'),
-                    _buildHotelList(featuredHotels),
+                    _buildHotelList(
+                        context,
+                        featuredHotels.cast<
+                            HotelDetails>()), // Pass context to access Navigator
                   ],
                   if (popularHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Popular Destinations'),
-                    _buildHotelList(popularHotels),
+                    _buildHotelList(
+                        context,
+                        popularHotels.cast<
+                            HotelDetails>()), // Pass context to access Navigator
                   ],
                 ],
               ),
@@ -76,7 +83,7 @@ class HomePage extends ConsumerWidget {
         ],
         currentIndex: 0,
         selectedItemColor: const Color(0xFFFF6F6F),
-        unselectedItemColor: Color.fromARGB(255, 150, 150, 150),
+        unselectedItemColor: const Color.fromARGB(255, 150, 150, 150),
         onTap: (index) {
           // Handle navigation
         },
@@ -103,21 +110,30 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildHotelList(List<HotelEntity> hotels) {
+  Widget _buildHotelList(
+      BuildContext context, List<HotelDetails> hotelDetails) {
+    // Pass BuildContext
     return SizedBox(
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: hotels.length,
+        itemCount: hotelDetails.length,
         itemBuilder: (context, index) {
-          final hotel = hotels[index];
+          final hotel = hotelDetails[index];
           return InkWell(
             onTap: () {
-              // Handle hotel tap
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HotelDetailsPage(
+                    hotelDetails: hotel,
+                  ),
+                ),
+              );
             },
             child: Container(
               width: 200,
-              margin: EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey[200],
