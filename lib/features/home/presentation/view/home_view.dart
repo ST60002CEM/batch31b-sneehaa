@@ -1,3 +1,5 @@
+import 'package:bookaway/core/common/widget/custom_navigation_bar.dart';
+import 'package:bookaway/features/home/domain/entity/home_entity.dart';
 import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +20,6 @@ class HomePage extends ConsumerWidget {
         .where((hotel) => hotel.hotelCategory == 'popular')
         .toList();
 
-    // Define the _performSearch function here
     void _performSearch(String location, DateTime checkInDate,
         DateTime checkOutDate, int adults, int children, int rooms) {}
 
@@ -46,46 +47,27 @@ class HomePage extends ConsumerWidget {
                   ),
                   if (featuredHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Featured'),
-                    _buildHotelList(context, featuredHotels.cast<HotelDetailsEntity>()),
+                    _buildHotelList(
+                        context, featuredHotels.cast<HotelEntity>()),
                   ],
                   if (popularHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Popular Destinations'),
-                    _buildHotelList(context, popularHotels.cast<HotelDetailsEntity>()),
+                    _buildHotelList(context, popularHotels.cast<HotelEntity>()),
                   ],
                 ],
               ),
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_online),
-            label: 'Favourites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+      bottomNavigationBar:CustomBottomNavigationBar(
         currentIndex: 0,
-        selectedItemColor: const Color(0xFFFF6F6F),
-        unselectedItemColor: const Color.fromARGB(255, 150, 150, 150),
         onTap: (index) {
           switch (index) {
             case 0:
-              // Handle navigation to home page
               Navigator.pushReplacementNamed(context, '/home');
               break;
             case 1:
-              // Handle navigation to favourites page
               Navigator.pushReplacementNamed(context, '/favourites');
               break;
             case 2:
-              // Handle navigation to profile page
               Navigator.pushReplacementNamed(context, '/profile');
               break;
           }
@@ -113,15 +95,21 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildHotelList(
-      BuildContext context, List<HotelDetailsEntity> hotelDetails) {
+  Widget _buildHotelList(BuildContext context, List<HotelEntity> hotelDetails) {
     return SizedBox(
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: hotelDetails.length,
         itemBuilder: (context, index) {
-          final hotel = hotelDetails[index];
+          final hotel = HotelDetailsEntity(
+            hotelId: hotelDetails[index].hotelId ?? '',
+            hotelName: hotelDetails[index].hotelName,
+            hotelPrice: hotelDetails[index].hotelPrice,
+            hotelDescription: hotelDetails[index].hotelDescription,
+            hotelCategory: hotelDetails[index].hotelCategory,
+            hotelImageUrl: hotelDetails[index].hotelImageUrl,
+          );
           return InkWell(
             onTap: () {
               // Navigate to HotelDetailsPage and pass the selected hotel details
@@ -129,7 +117,7 @@ class HomePage extends ConsumerWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                    HotelDetailsPage(hotelDetailsEntity: hotel),
+                      HotelDetailsPage(hotelDetailsEntity: hotel),
                 ),
               );
             },
