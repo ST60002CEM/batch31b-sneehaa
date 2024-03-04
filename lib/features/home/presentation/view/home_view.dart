@@ -1,9 +1,9 @@
-import 'package:bookaway/features/home/presentation/view/booking_search.dart';
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
+import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
+import 'package:bookaway/features/home/presentation/view/booking_search.dart';
 import 'package:bookaway/features/home/presentation/home_viewmodel/home_view_model.dart';
-import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -46,17 +46,11 @@ class HomePage extends ConsumerWidget {
                   ),
                   if (featuredHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Featured'),
-                    _buildHotelList(
-                        context,
-                        featuredHotels.cast<
-                            HotelDetails>()), // Pass context to access Navigator
+                    _buildHotelList(context, featuredHotels.cast<HotelDetailsEntity>()),
                   ],
                   if (popularHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Popular Destinations'),
-                    _buildHotelList(
-                        context,
-                        popularHotels.cast<
-                            HotelDetails>()), // Pass context to access Navigator
+                    _buildHotelList(context, popularHotels.cast<HotelDetailsEntity>()),
                   ],
                 ],
               ),
@@ -69,12 +63,8 @@ class HomePage extends ConsumerWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.hotel),
-            label: 'Hotels',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.book_online),
-            label: 'My Bookings',
+            label: 'Favourites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -85,7 +75,20 @@ class HomePage extends ConsumerWidget {
         selectedItemColor: const Color(0xFFFF6F6F),
         unselectedItemColor: const Color.fromARGB(255, 150, 150, 150),
         onTap: (index) {
-          // Handle navigation
+          switch (index) {
+            case 0:
+              // Handle navigation to home page
+              Navigator.pushReplacementNamed(context, '/home');
+              break;
+            case 1:
+              // Handle navigation to favourites page
+              Navigator.pushReplacementNamed(context, '/favourites');
+              break;
+            case 2:
+              // Handle navigation to profile page
+              Navigator.pushReplacementNamed(context, '/profile');
+              break;
+          }
         },
       ),
     );
@@ -111,8 +114,7 @@ class HomePage extends ConsumerWidget {
   }
 
   Widget _buildHotelList(
-      BuildContext context, List<HotelDetails> hotelDetails) {
-    // Pass BuildContext
+      BuildContext context, List<HotelDetailsEntity> hotelDetails) {
     return SizedBox(
       height: 200,
       child: ListView.builder(
@@ -122,12 +124,12 @@ class HomePage extends ConsumerWidget {
           final hotel = hotelDetails[index];
           return InkWell(
             onTap: () {
+              // Navigate to HotelDetailsPage and pass the selected hotel details
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HotelDetailsPage(
-                    hotelDetails: hotel,
-                  ),
+                  builder: (context) =>
+                    HotelDetailsPage(hotelDetailsEntity: hotel),
                 ),
               );
             },

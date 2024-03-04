@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class HotelDetails extends Equatable {
+class HotelDetailsEntity extends Equatable {
   final String hotelId;
   final String hotelName;
   final double hotelPrice;
@@ -8,7 +8,7 @@ class HotelDetails extends Equatable {
   final String hotelCategory;
   final String? hotelImageUrl;
 
-  const HotelDetails(
+  const HotelDetailsEntity(
       {required this.hotelId,
       required this.hotelName,
       required this.hotelPrice,
@@ -26,8 +26,8 @@ class HotelDetails extends Equatable {
         hotelImageUrl
       ];
 
-  factory HotelDetails.fromJson(Map<String, dynamic> json) {
-    return HotelDetails(
+  factory HotelDetailsEntity.fromJson(Map<String, dynamic> json) {
+    return HotelDetailsEntity(
       hotelId: json['hotelId'],
       hotelName: json['hotelName'],
       hotelPrice: json['hotelPrice'].toDouble(),
@@ -50,6 +50,6 @@ class HotelDetails extends Equatable {
 
   @override
   String toString() {
-    return 'HotelDetails(hotelId: $hotelId, hotelName: $hotelName, hotelPrice: $hotelPrice, hotelDescription: $hotelDescription, hotelCategory: $hotelCategory, hotelImageUrl: $hotelImageUrl)';
+    return 'HotelDetailsEntity(hotelId: $hotelId, hotelName: $hotelName, hotelPrice: $hotelPrice, hotelDescription: $hotelDescription, hotelCategory: $hotelCategory, hotelImageUrl: $hotelImageUrl)';
   }
 }

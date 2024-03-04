@@ -13,6 +13,7 @@ class ApiEndpoints {
   static const String register = "user/register";
   static const String getAllHotels = "hotel/get_hotels";
   static const String getHotelById = "hotel/get_hotel";
+  static const String profile = "users/profile";
   static String getHotelByIdUrl(String id) {
     return "$baseUrl$getHotelById/$id";
   }

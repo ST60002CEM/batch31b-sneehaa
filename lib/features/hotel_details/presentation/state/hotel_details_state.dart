@@ -1,8 +1,9 @@
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
+
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
 
 class HotelDetailsState {
   final bool isLoading;
-  final HotelDetails? selectedHotel;
+  final HotelDetailsEntity? selectedHotel;
   final String? error;
 
   HotelDetailsState({
@@ -20,7 +21,7 @@ class HotelDetailsState {
 
   HotelDetailsState copyWith({
     bool? isLoading,
-    HotelDetails? selectedHotel,
+    HotelDetailsEntity? selectedHotel,
     String? error,
   }) {
     return HotelDetailsState(

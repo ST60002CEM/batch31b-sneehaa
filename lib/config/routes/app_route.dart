@@ -1,9 +1,10 @@
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
-import 'package:flutter/material.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
+import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
+import 'package:bookaway/features/profile/presentation/view/user_profile_view.dart';
 import 'package:bookaway/features/auth/presentation/view/login_view.dart';
 import 'package:bookaway/features/auth/presentation/view/register_view.dart';
 import 'package:bookaway/features/home/presentation/view/home_view.dart';
-import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
+import 'package:flutter/widgets.dart';
 
 class AppRoute {
   AppRoute._();
@@ -13,19 +14,19 @@ class AppRoute {
   static const String loginRoute = '/login';
   static const String registerRoute = '/register';
   static const String hotelDetailsRoute = '/hotelDetails';
+  static const String profileRoute = '/profile';
 
   static getApplicationRoute() {
     return {
-      // splashRoute: (context) => const SplashView(),
-      loginRoute: (context) => const LoginView(),
-      homeRoute: (context) => HomePage(),
-      registerRoute: (context) => const RegisterView(),
-
+      loginRoute: (context) => const MyLogin(),
+      homeRoute: (context) => const HomePage(),
+      registerRoute: (context) => const MyRegister(),
+      profileRoute: (context) => const UserProfilePage(),
       hotelDetailsRoute: (context) {
-        final hotelDetails = ModalRoute.of(context)?.settings.arguments
-            as HotelDetails?;
-        return HotelDetailsPage(hotelDetails: hotelDetails);
-      },
+        final hotelDetailsEntity =
+            ModalRoute.of(context)?.settings.arguments as HotelDetailsEntity;
+        return HotelDetailsPage(hotelDetailsEntity: hotelDetailsEntity);
+      }
     };
   }
 }

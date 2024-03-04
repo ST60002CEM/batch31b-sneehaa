@@ -1,4 +1,5 @@
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
+
 
 // Inside HotelDetailsViewModel class
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +25,7 @@ class HotelDetailsViewModel extends StateNotifier<HotelDetailsState> {
       (l) => state =
           state.copyWith(isLoading: false, error: l.error, selectedHotel: null),
       (r) {
-        final hotelDetails = HotelDetails(
+        final hotelDetails = HotelDetailsEntity(
           hotelId: r.hotelId,
           hotelName: r.hotelName,
           hotelPrice: r.hotelPrice,

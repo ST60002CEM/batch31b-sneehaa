@@ -1,9 +1,8 @@
 
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../domain/entity/hotel_details_entity.dart';
 
 part 'hotel_api_model.g.dart';
 
@@ -44,7 +43,7 @@ class HotelDetailsApiModel extends Equatable {
       _$HotelDetailsApiModelFromJson(json);
 
   // Convert API Object to Entity
-  HotelDetails toEntity() => HotelDetails(
+  HotelDetailsEntity toEntity() => HotelDetailsEntity(
         hotelId: hotelId.toString(),
         hotelName: hotelName,
         hotelPrice: hotelPrice,

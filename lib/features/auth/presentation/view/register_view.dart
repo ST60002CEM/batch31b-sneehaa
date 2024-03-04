@@ -1,166 +1,134 @@
+import 'package:bookaway/config/routes/app_route.dart';
 import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
 import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmodel.dart';
-import 'package:bookaway/features/auth/presentation/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterView extends ConsumerStatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+class MyRegister extends ConsumerStatefulWidget {
+  const MyRegister({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<RegisterView> createState() => _RegisterViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyRegisterState();
 }
 
-class _RegisterViewState extends ConsumerState<RegisterView> {
+class _MyRegisterState extends ConsumerState<MyRegister> {
   final _formKey = GlobalKey<FormState>();
-  final _gap = const SizedBox(height: 8);
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool _isObscurePassword = true;
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    double padding = MediaQuery.of(context).size.width * 0.1;
-
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                Image.asset('assets/images/logo.png',
-                    height: MediaQuery.of(context).size.width * 0.5),
-                const SizedBox(height: 48),
-                TextFormField(
-                  controller: firstNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'firstName',
-                    prefixIcon: Icon(Icons.person),
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Create Account',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _userNameController,
+                decoration: InputDecoration(labelText: 'Username'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _firstNameController,
+                decoration: InputDecoration(labelText: 'First Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your first name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your last name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    final entity = AuthEntity(
+                      firstName: _firstNameController.text,
+                      lastName: _lastNameController.text,
+                      userName: _userNameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                    await ref
+                        .read(authViewModelProvider.notifier)
+                        .registerUser(entity, context);
+                  }
+                },
+                child: const Text(
+                  'Sign Up',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 243, 142, 139),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already have an account? "),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoute.loginRoute);
+                    },
+                    child: const Text('Sign In'),
                   ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your firstName';
-                    }
-                    return null;
-                  },
-                ),
-                _gap,
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: lastNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'lastName',
-                    prefixIcon: Icon(Icons.person),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your lastname';
-                    }
-                    return null;
-                  },
-                ),
-                _gap,
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                _gap,
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: _isObscurePassword,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(_isObscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          _isObscurePassword = !_isObscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                _gap,
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final userData = AuthEntity(
-                        firstName: firstNameController.text.trim(),
-                        lastName: lastNameController.text.trim(),
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
-                      ref
-                          .read(authViewModelProvider.notifier)
-                          .register(userData);
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('User created successfully'),
-                          backgroundColor: Color(0xFFFF8B8B),
-                        ),
-                      );
-
-                      // Navigate to login page
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginView(),
-                      ));
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xFFFF6F6F),
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: const Text('Register'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const LoginView(),
-                    ));
-                  },
-                  child: const Text("Already have an account? Login"),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

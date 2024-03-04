@@ -1,4 +1,5 @@
 import 'package:bookaway/config/constants/api_endpoints.dart';
+import 'package:bookaway/core/common/provider/flutter_secure_storage.dart';
 import 'package:bookaway/core/failure/failure.dart';
 import 'package:bookaway/core/network/remote/http_service.dart';
 import 'package:bookaway/features/profile/data/model/profile_api_model.dart';
@@ -6,25 +7,26 @@ import 'package:bookaway/features/profile/domain/entity/profile_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 final profileRemoteDataSourceProvider = Provider<ProfileRemoteDataSource>(
   (ref) => ProfileRemoteDataSource(
-    sharedPreferences: ref.read(sharedPreferencesProvider),
+    secureStorage: ref.read(flutterSecureStorageProvider),
     dio: ref.read(httpServiceProvider),
   ),
 );
 
 class ProfileRemoteDataSource {
   final Dio dio;
-  final SharedPreferences sharedPreferences;
+  final FlutterSecureStorage secureStorage;
 
-  ProfileRemoteDataSource({required this.dio, required this.sharedPreferences});
+  ProfileRemoteDataSource({required this.dio, required this.secureStorage});
 
-  // Get User Profile by userId
+  //Get User Profile by userId
   Future<Either<Failure, List<ProfileEntity>>> getProfile() async {
     try {
-      final token = sharedPreferences.getString("authToken");
+      final token = await secureStorage.read(key: "authToken");
       if (token == null) {
         return Left(Failure(error: "Token not found"));
       }

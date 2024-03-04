@@ -1,7 +1,7 @@
 import 'package:bookaway/config/constants/api_endpoints.dart';
 import 'package:bookaway/core/failure/failure.dart';
 import 'package:bookaway/core/network/remote/http_service.dart';
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details_entity.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,12 +19,12 @@ class HotelDetailsRemoteDataSource {
     required this.dio,
   });
 
-  Future<Either<Failure, HotelDetails>> getHotelById(String hotelId) async {
+  Future<Either<Failure, HotelDetailsEntity>> getHotelById(String hotelId) async {
     try {
       final response = await dio.get(ApiEndpoints.getHotelByIdUrl(hotelId));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = response.data;
-        final hotelDetails = HotelDetails(
+        final hotelDetails = HotelDetailsEntity(
           hotelId: data['_id'],
           hotelName: data['hotelName'],
           hotelPrice: data['hotelPrice'],
