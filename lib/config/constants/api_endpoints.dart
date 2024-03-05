@@ -17,6 +17,7 @@ class ApiEndpoints {
   static const String profile = "user/profile";
   static const String sendOTP = "/send-otp";
   static const String getBookings = '/api/booking';
+  static const String search = '/hotel/search';
   static const String verifyandUpdatePassword =
       "/verify-otp-and-update-password";
 

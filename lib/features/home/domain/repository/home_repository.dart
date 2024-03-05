@@ -21,4 +21,5 @@ final hotelRepositoryProvider = Provider<IHotelRepository>(
 
 abstract class IHotelRepository {
   Future<Either<Failure, List<HotelEntity>>> getAllHotels();
+   Future<Either<Failure, List<HotelEntity>>> searchHotels(String searchText);
 }

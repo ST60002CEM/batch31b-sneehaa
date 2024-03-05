@@ -22,6 +22,17 @@ class HiveService {
     return hotels;
   }
 
+  Future<List<HotelHiveModel>> searchHotels(String query) async {
+  var box = await Hive.openBox<HotelHiveModel>(HiveTableConstant.hotelBox);
+  
+  // Filter hotels based on the search query
+  var hotels = box.values.where((hotel) => hotel.hotelName.toLowerCase().contains(query.toLowerCase())).toList();
+
+  box.close();
+  return hotels;
+}
+
+
   // ======================== Insert Dummy Data ========================
   Future<void> addDummyHotels() async {
     // Check if the hotel box is empty
