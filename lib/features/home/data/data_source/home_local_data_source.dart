@@ -33,14 +33,4 @@ class HotelLocalDataSource {
       return Left(Failure(error: e.toString()));
     }
   }
-
-  Future<Either<Failure, List<HotelEntity>>> searchHotels(String query) async {
-    try {
-      final hotels = await hiveService.searchHotels(query);
-      final hotelEntities = hotelHiveModel.toEntityList(hotels);
-      return Right(hotelEntities);
-    } catch (e) {
-      return Left(Failure(error: e.toString()));
-    }
-  }
 }

@@ -20,7 +20,5 @@ class HotelUseCase {
   Future<Either<Failure, List<HotelEntity>>> getAllHotels() {
     return hotelRepository.getAllHotels();
   }
-    Future<Either<Failure, List<HotelEntity>>> searchHotels(String searchText) {
-    return hotelRepository.searchHotels(searchText);
-  }
+
 }

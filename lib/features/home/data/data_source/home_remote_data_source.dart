@@ -2,7 +2,6 @@ import 'package:bookaway/config/constants/api_endpoints.dart';
 import 'package:bookaway/core/failure/failure.dart';
 import 'package:bookaway/core/network/remote/http_service.dart';
 import 'package:bookaway/core/shared_prefs/user_shared_prefs.dart';
-import 'package:bookaway/features/home/data/dto/search_hotels_dto.dart';
 import 'package:bookaway/features/home/data/model/home_api_model.dart';
 import 'package:bookaway/features/home/domain/entity/home_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -58,41 +57,6 @@ class HotelRemoteDataSource {
       return Left(
         Failure(
           error: e.error.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<Either<Failure, List<HotelEntity>>> searchHotels(
-      String searchText) async {
-    try {
-      String? token;
-      await userSharedPrefs
-          .getUserToken()
-          .then((value) => value.fold((l) => null, (r) => token = r!));
-      Response response = await dio.get(
-        '${ApiEndpoints.search}/$searchText',
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
-      );
-      if (response.statusCode == 200) {
-        SearchHotelsDto searchData = SearchHotelsDto.fromJson(response.data);
-        List<HotelEntity> hotels = hotelApiModel.toEntityList(searchData.search);
-        return Right(hotels);
-      } else {
-        return Left(
-          Failure(
-            error: response.data["message"],
-            statusCode: response.statusCode.toString(),
-          ),
-        );
-      }
-    } on DioException catch (e) {
-      return Left(
-        Failure(
-          error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0',
         ),
       );
     }

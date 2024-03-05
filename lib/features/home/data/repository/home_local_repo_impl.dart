@@ -25,9 +25,5 @@ class HotelLocalRepositoryImpl implements IHotelRepository {
     return hotelLocalDataSource.getAllHotels();
   }
   
-  @override
-  Future<Either<Failure, List<HotelEntity>>> searchHotels(String searchText) {
-     return hotelLocalDataSource.searchHotels(searchText);
-  }
   
 }

@@ -23,9 +23,4 @@ class HotelRemoteRepositoryImpl implements IHotelRepository {
   Future<Either<Failure, List<HotelEntity>>> getAllHotels() {
     return hotelRemoteDataSource.getAllHotels();
   }
-
-    @override
-  Future<Either<Failure, List<HotelEntity>>>  searchHotels(String searchText) {
-    return hotelRemoteDataSource. searchHotels(searchText);
-  }
 }
