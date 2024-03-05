@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
+
 
 import '../viewmodel/otp_view_model.dart';
 
@@ -20,7 +20,6 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
@@ -45,15 +44,7 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                 'We are sorry to hear that you forgot your password',
                 style: TextStyle(
                   fontSize: 12.0,
-                  color: Colors.red,
-                ),
-              ),
-              Container(
-                height: 400,
-                width: 200,
-                color: Colors.transparent,
-                child: Lottie.asset(
-                  'assets/lottie/forgotpassword.json',
+                  color: Color.fromRGBO(255, 107, 107, 1),
                 ),
               ),
               Column(
@@ -75,7 +66,7 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                           TextSpan(
                             text: 'We will send you an ',
                             style: TextStyle(
-                              color: Color.fromRGBO(238, 146, 146, 1),
+                              color: Color.fromRGBO(255, 107, 107, 1),
                             ),
                           ),
                           TextSpan(
@@ -90,7 +81,7 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                                 ' on this email address to verify your account.',
                             style: TextStyle(
                               fontFamily: 'productSans',
-                              color: Color.fromRGBO(238, 146, 146, 1),
+                              color: Color.fromRGBO(255, 107, 107, 1),
                             ),
                           ),
                         ],
@@ -108,7 +99,7 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                       child: TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.text,
-                        cursorColor: const Color.fromRGBO(238, 146, 146, 1),
+                        cursorColor: const Color.fromRGBO(255, 107, 107, 1),
                         showCursor: false,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -119,16 +110,16 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                           labelStyle: TextStyle(
                             fontSize: 12,
                             letterSpacing: 1.0,
-                            color: Color.fromRGBO(238, 146, 146, 1),
+                            color: Color.fromRGBO(255, 107, 107, 1),
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
                           floatingLabelStyle: TextStyle(
-                            color:Color.fromRGBO(238, 146, 146, 1),
+                            color: Color.fromRGBO(255, 107, 107, 1),
                           ),
                           prefixIcon: Icon(
                             Icons.email,
-                            color: Color.fromRGBO(238, 146, 146, 1),
+                            color: Color.fromRGBO(255, 107, 107, 1),
                             size: 20.0,
                           ),
                         ),
@@ -155,7 +146,8 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:const Color.fromRGBO(238, 146, 146, 1),
+                          backgroundColor:
+                              const Color.fromRGBO(255, 107, 107, 1), // FF6B6B
                           padding: const EdgeInsets.symmetric(
                               vertical: 15.0, horizontal: 10.0),
                           shape: RoundedRectangleBorder(
@@ -168,6 +160,7 @@ class _SendOTPViewState extends ConsumerState<SendOTPView> {
                             fontSize: 14.0,
                             letterSpacing: 1.0,
                             fontFamily: 'productSansBold',
+                            color: Colors.white,
                           ),
                         ),
                       ),

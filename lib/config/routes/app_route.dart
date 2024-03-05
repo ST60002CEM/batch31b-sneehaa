@@ -1,3 +1,5 @@
+import 'package:bookaway/features/forgot_password/presentation/view/send_otp_page.dart';
+import 'package:bookaway/features/forgot_password/presentation/view/verify_otp_page.dart';
 import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
 import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 import 'package:bookaway/features/profile/presentation/view/user_profile_view.dart';
@@ -26,6 +28,9 @@ class AppRoute {
       homeRoute: (context) => const HomePage(),
       registerRoute: (context) => const MyRegister(),
       profileRoute: (context) => const UserProfilePage(),
+        verifyOTP: (context) => const VerifyOTPPage(),
+      sendOTP: (context) => const SendOTPView(),
+      
 
     
 

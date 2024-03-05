@@ -108,12 +108,11 @@ class _MyLoginState extends ConsumerState<MyLogin> {
                         ),
                         TextButton(
                           onPressed: () {
-                                        Navigator.pushNamed(
+                            Navigator.pushNamed(
                               context,
-                              AppRoute.registerRoute,
+                              AppRoute.sendOTP,
                             );
                           },
-                          
                           child: const Text('Forgot Password?'),
                         ),
                       ],
