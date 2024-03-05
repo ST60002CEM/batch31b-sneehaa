@@ -31,10 +31,6 @@ class AppRoute {
         verifyOTP: (context) => const VerifyOTPPage(),
       sendOTP: (context) => const SendOTPView(),
       
-
-    
-
-
       hotelDetailsRoute: (context) {
         final hotelDetailsEntity =
             ModalRoute.of(context)?.settings.arguments as HotelDetailsEntity;

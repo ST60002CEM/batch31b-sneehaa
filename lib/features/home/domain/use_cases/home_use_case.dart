@@ -20,4 +20,5 @@ class HotelUseCase {
   Future<Either<Failure, List<HotelEntity>>> getAllHotels() {
     return hotelRepository.getAllHotels();
   }
+
 }

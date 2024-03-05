@@ -1,11 +1,11 @@
-import 'package:bookaway/core/common/widget/custom_navigation_bar.dart';
-import 'package:bookaway/features/home/domain/entity/home_entity.dart';
-import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
+import 'package:bookaway/features/home/domain/entity/home_entity.dart';
 import 'package:bookaway/features/home/presentation/view/booking_search.dart';
+import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
 import 'package:bookaway/features/home/presentation/home_viewmodel/home_view_model.dart';
+import 'package:bookaway/core/common/widget/custom_navigation_bar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,9 +19,6 @@ class HomePage extends ConsumerWidget {
     final popularHotels = viewModel.hotels
         .where((hotel) => hotel.hotelCategory == 'popular')
         .toList();
-
-    void _performSearch(String location, DateTime checkInDate,
-        DateTime checkOutDate, int adults, int children, int rooms) {}
 
     return Scaffold(
       appBar: AppBar(
@@ -42,22 +39,29 @@ class HomePage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BookingSearchBar(
-                    onSearch: _performSearch,
+                  HotelSearchBar(
+                    searchController: TextEditingController(),
+                    onChanged: (value) {},
+                    hotels: viewModel.hotels, // Pass the list of hotels
                   ),
                   if (featuredHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Featured'),
                     _buildHotelList(
-                        context, featuredHotels.cast<HotelEntity>()),
+                      context,
+                      featuredHotels.cast<HotelEntity>(),
+                    ),
                   ],
                   if (popularHotels.isNotEmpty) ...[
                     _buildCategoryHeader('Popular Destinations'),
-                    _buildHotelList(context, popularHotels.cast<HotelEntity>()),
+                    _buildHotelList(
+                      context,
+                      popularHotels.cast<HotelEntity>(),
+                    ),
                   ],
                 ],
               ),
             ),
-      bottomNavigationBar:CustomBottomNavigationBar(
+      bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
         onTap: (index) {
           switch (index) {
@@ -102,22 +106,23 @@ class HomePage extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         itemCount: hotelDetails.length,
         itemBuilder: (context, index) {
-          final hotel = HotelDetailsEntity(
-            hotelId: hotelDetails[index].hotelId ?? '',
-            hotelName: hotelDetails[index].hotelName,
-            hotelPrice: hotelDetails[index].hotelPrice,
-            hotelDescription: hotelDetails[index].hotelDescription,
-            hotelCategory: hotelDetails[index].hotelCategory,
-            hotelImageUrl: hotelDetails[index].hotelImageUrl,
-          );
+          final hotel = hotelDetails[index]; // Use HotelEntity directly
           return InkWell(
             onTap: () {
               // Navigate to HotelDetailsPage and pass the selected hotel details
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      HotelDetailsPage(hotelDetailsEntity: hotel),
+                  builder: (context) => HotelDetailsPage(
+                    hotelDetailsEntity: HotelDetailsEntity(
+                      hotelId: hotel.hotelId ?? '',
+                      hotelName: hotel.hotelName,
+                      hotelPrice: hotel.hotelPrice,
+                      hotelDescription: hotel.hotelDescription,
+                      hotelCategory: hotel.hotelCategory,
+                      hotelImageUrl: hotel.hotelImageUrl,
+                    ),
+                  ),
                 ),
               );
             },

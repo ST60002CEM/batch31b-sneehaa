@@ -24,4 +24,6 @@ class HotelLocalRepositoryImpl implements IHotelRepository {
   Future<Either<Failure, List<HotelEntity>>> getAllHotels() {
     return hotelLocalDataSource.getAllHotels();
   }
+  
+  
 }
