@@ -109,7 +109,7 @@ class _VerifyOTPPageState extends ConsumerState<VerifyOTPPage> {
                             if (formState != null &&
                                 formState.mounted &&
                                 formState.validate()) {
-                              // Call your function here
+                              Navigator.pushNamed(context, '/login');
                             }
                           },
                           style: ElevatedButton.styleFrom(

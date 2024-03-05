@@ -21,7 +21,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book_online),
-            label: 'Favourites',
+            label: 'Booking',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -30,7 +30,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ],
         currentIndex: 0,
         selectedItemColor: const Color(0xFFFF6F6F),
-        unselectedItemColor: const Color.fromARGB(255, 150, 150, 150),
+        unselectedItemColor: Color.fromARGB(255, 0, 0, 0),
         onTap: onTap);
   }
 }

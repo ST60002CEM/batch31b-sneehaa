@@ -22,6 +22,7 @@ class HiveService {
     return hotels;
   }
 
+
   Future<List<HotelHiveModel>> searchHotels(String query) async {
   var box = await Hive.openBox<HotelHiveModel>(HiveTableConstant.hotelBox);
   
@@ -31,7 +32,6 @@ class HiveService {
   box.close();
   return hotels;
 }
-
 
   // ======================== Insert Dummy Data ========================
   Future<void> addDummyHotels() async {

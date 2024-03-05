@@ -1,3 +1,4 @@
+import 'package:bookaway/features/bookings/presentation/view/view_hotel/view_booking.dart';
 import 'package:bookaway/features/forgot_password/presentation/view/send_otp_page.dart';
 import 'package:bookaway/features/forgot_password/presentation/view/verify_otp_page.dart';
 import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
@@ -19,8 +20,7 @@ class AppRoute {
   static const String profileRoute = '/profile';
   static const String verifyOTP = "/verifyOTP";
   static const String sendOTP = "/sendOTP";
-
-
+  static const String viewbookedhotels = '/viewbookedhotels';
 
   static getApplicationRoute() {
     return {
@@ -28,9 +28,9 @@ class AppRoute {
       homeRoute: (context) => const HomePage(),
       registerRoute: (context) => const MyRegister(),
       profileRoute: (context) => const UserProfilePage(),
-        verifyOTP: (context) => const VerifyOTPPage(),
+      verifyOTP: (context) => const VerifyOTPPage(),
       sendOTP: (context) => const SendOTPView(),
-      
+      viewbookedhotels: (context) => const ViewBookedHotels(),
       hotelDetailsRoute: (context) {
         final hotelDetailsEntity =
             ModalRoute.of(context)?.settings.arguments as HotelDetailsEntity;
