@@ -1,5 +1,6 @@
 import 'package:bookaway/config/routes/app_route.dart';
 import 'package:bookaway/features/auth/presentation/auth_viewmodel/auth_viewmodel.dart';
+import 'package:bookaway/features/home/presentation/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -72,13 +73,15 @@ class _MyLoginState extends ConsumerState<MyLogin> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await ref
+                          final success = await ref
                               .read(authViewModelProvider.notifier)
                               .loginUser(
                                 _emailController.text,
                                 _passwordController.text,
                                 context,
                               );
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const HomePage()));
                         }
                       },
                       style: ButtonStyle(
@@ -105,8 +108,12 @@ class _MyLoginState extends ConsumerState<MyLogin> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Handle forgot password
+                                        Navigator.pushNamed(
+                              context,
+                              AppRoute.registerRoute,
+                            );
                           },
+                          
                           child: const Text('Forgot Password?'),
                         ),
                       ],

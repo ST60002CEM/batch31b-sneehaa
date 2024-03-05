@@ -52,8 +52,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
           },
         ),
       ),
-      // Add the rest of your widget tree here
-
       body: Consumer(
         builder: (context, watch, child) {
           final state = ref.watch(profileViewModelProvider);
@@ -70,9 +68,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Align(
-                    alignment: Alignment.topCenter,
-                  ),
                   Center(
                     child: Stack(
                       children: [
@@ -98,7 +93,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  const SizedBox(height: 16.0),
                   Center(
                     child: Text(
                       '${user.firstName} ${user.lastName}',
@@ -121,26 +115,17 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                   const SizedBox(height: 24.0),
                   _buildDetailRow(Icons.email, 'Email', user.email),
                   _buildDivider(),
-                  _buildDetailRow(Icons.location_on, 'Address', user.address),
-                  _buildDivider(),
-                  _buildDetailRow(Icons.phone, 'Phone', user.phone),
-                  _buildDivider(),
-                  _buildDetailRow(
-                      Icons.verified_user_rounded, 'Username', user.username),
                   const SizedBox(height: 32.0),
                   Center(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        onPressed: () async {},
-                        icon: const Icon(Iconsax.edit, size: 20.0),
-                        label: const Text('Edit Profile'),
                       ),
+                      onPressed: () async {},
+                      icon: const Icon(Iconsax.edit, size: 20.0),
+                      label: const Text('Edit Profile'),
                     ),
                   ),
                 ],
@@ -153,7 +138,6 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   }
 
   Widget _buildDetailRow(IconData icon, String title, String text) {
-    Color textColor = Colors.black;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -162,20 +146,15 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
             Icon(icon, size: 20.0),
             const SizedBox(width: 12.0),
             Text(title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                )),
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
           ],
         ),
         const SizedBox(height: 4.0),
         Text(
           text,
           style: GoogleFonts.raleway(
-            textStyle: TextStyle(
-              fontSize: 15,
-              color: textColor,
-            ),
+            textStyle: const TextStyle(fontSize: 15),
           ),
         ),
       ],
@@ -184,9 +163,10 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
 
   Widget _buildDivider() {
     return Container(
-        margin: const EdgeInsets.symmetric(vertical: 16.0),
-        height: 1.0,
-        color: Colors.grey);
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      height: 1.0,
+      color: Colors.grey,
+    );
   }
 
   void _showImagePickerModal(BuildContext context) {

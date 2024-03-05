@@ -26,7 +26,7 @@ class ProfileRemoteDataSource {
   //Get User Profile by userId
   Future<Either<Failure, List<ProfileEntity>>> getProfile() async {
     try {
-      final token = await secureStorage.read(key: "authToken");
+      final token = await secureStorage.read(key: "authenticakenToken");
       if (token == null) {
         return Left(Failure(error: "Token not found"));
       }

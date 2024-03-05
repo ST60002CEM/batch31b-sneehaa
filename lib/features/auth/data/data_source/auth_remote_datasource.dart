@@ -1,70 +1,120 @@
 import 'package:bookaway/config/constants/api_endpoints.dart';
+import 'package:bookaway/core/common/provider/flutter_secure_storage.dart';
 import 'package:bookaway/core/failure/failure.dart';
 import 'package:bookaway/core/network/remote/http_service.dart';
-import 'package:bookaway/core/shared_prefs/user_shared_prefs.dart';
-import 'package:bookaway/features/auth/data/model/auth_api_model.dart';
-import 'package:bookaway/features/auth/domain/entity/auth_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
+import '../../domain/entity/auth_entity.dart';
+import '../model/auth_api_model.dart';
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>(
-    (ref) => AuthRemoteDataSource(ref.read(httpServiceProvider)));
+  (ref) => AuthRemoteDataSource(
+    ref.read(httpServiceProvider),
+    ref.read(flutterSecureStorageProvider),
+  ),
+);
 
 class AuthRemoteDataSource {
   final Dio dio;
-  // final UserSharedPrefs userSharedPrefs;
+  final FlutterSecureStorage secureStorage;
 
-  AuthRemoteDataSource(this.dio);
+  AuthRemoteDataSource(this.dio, this.secureStorage);
 
-Future<Either<Failure, bool>> registerUser(AuthEntity user) async {
-  try {
-    AuthApiModel authApiModel = AuthApiModel.fromEntity(user);
-    Response response = await dio.post(ApiEndpoints.register, data: {
-      "firstName": authApiModel.firstName,
-      "lastName": authApiModel.lastName,
-      "email": authApiModel.email,
-      "password": authApiModel.password,
-    });
-    if (response.statusCode == 200) {
-      return const Right(true);
-    } else {
-      return Left(Failure(
-          error: response.data['message'] ?? 'Unknown error',
-          statusCode: response.statusCode.toString()));
-    }
-  } on DioException catch (e) {
-    String errorMessage = e.message ?? 'An unexpected error occurred'; 
-    String? statusCode = e.response?.statusCode?.toString();
-    if (e.response != null && e.response!.data != null) {
-      errorMessage = e.response!.data['message'] ?? errorMessage;
-    }
-    return Left(Failure(
-        error: errorMessage,
-        statusCode: statusCode ?? 'Unknown status code'));
-  }
-}
-
-  //login
-  Future<Either<Failure, bool>> loginUser(String email, String password) async {
+  Future<Either<Failure, bool>> registerUser(AuthEntity user) async {
     try {
-      Response response = await dio.post(ApiEndpoints.login,
-          data: {'email': email, 'password': password});
+      AuthApiModel apiModel = AuthApiModel.fromEntity(user);
+      Response response = await dio.post(
+        ApiEndpoints.register,
+        data: {
+          "firstName": apiModel.firstName,
+          "lastName": apiModel.lastName,
+          "email": apiModel.email,
+          "password": apiModel.password,
+        },
+      );
       if (response.statusCode == 200) {
-        String token = response.data['token'];
-        await UserSharedPrefs().setUserToken(token);
-        // ignore: unused_local_variable
-        final storedToken = await UserSharedPrefs().setUserToken(token);
         return const Right(true);
       } else {
-        return Left(Failure(
-            error: response.data['message'],
-            statusCode: response.statusCode.toString()));
+        return Left(
+          Failure(
+            error: response.data["message"],
+            statusCode: response.statusCode.toString(),
+          ),
+        );
       }
     } on DioException catch (e) {
-      return Left(Failure(
+      return Left(
+        Failure(
           error: e.error.toString(),
-          statusCode: e.response?.statusCode.toString() ?? '0'));
+          statusCode: e.response?.statusCode.toString() ?? '0',
+        ),
+      );
+    }
+  }
+
+  Future<Either<Failure, bool>> loginUser(String email, String password) async {
+    try {
+      Response response = await dio.post(
+        ApiEndpoints.login,
+        data: {
+          "email": email,
+          "password": password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic>? responseData =
+            response.data as Map<String, dynamic>?;
+
+        if (responseData != null && responseData.containsKey('token')) {
+          final token = responseData['token'];
+
+          await secureStorage.write(key: "authenticationToken", value: token);
+
+          final decodedToken = JwtDecoder.decode(token);
+          final tokenName = decodedToken['firstName'];
+
+          if (email == tokenName) {
+            return const Right(true);
+          } else {
+            return Left(
+              Failure(
+                error: response.data?['message'] ?? "Unknown error",
+                statusCode: response.statusCode.toString(),
+              ),
+            );
+          }
+        } else {
+          return Left(
+            Failure(
+              error: response.data?['message'] ?? "Unknown error",
+              statusCode: response.statusCode.toString(),
+            ),
+          );
+        }
+      } else {
+        return Left(
+          Failure(
+            error: response.data?['message'] ?? "Unknown error",
+            statusCode: response.statusCode.toString(),
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        return Left(Failure(error: "Connection timeout. Please try again."));
+      } else if (e.type == DioExceptionType.badResponse) {
+        return Left(Failure(error: "Server error. Please try again later."));
+      } else {
+        return Left(Failure(error: "An unexpected error occurred."));
+      }
+    } catch (e) {
+      return Left(Failure(error: "An unexpected error occurred."));
     }
   }
 }

@@ -15,7 +15,6 @@ class _MyRegisterState extends ConsumerState<MyRegister> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _userNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -34,16 +33,6 @@ class _MyRegisterState extends ConsumerState<MyRegister> {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              TextFormField(
-                controller: _userNameController,
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-              ),
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
@@ -98,7 +87,6 @@ class _MyRegisterState extends ConsumerState<MyRegister> {
                     final entity = AuthEntity(
                       firstName: _firstNameController.text,
                       lastName: _lastNameController.text,
-                      userName: _userNameController.text,
                       email: _emailController.text,
                       password: _passwordController.text,
                     );

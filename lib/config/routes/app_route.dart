@@ -15,6 +15,10 @@ class AppRoute {
   static const String registerRoute = '/register';
   static const String hotelDetailsRoute = '/hotelDetails';
   static const String profileRoute = '/profile';
+  static const String verifyOTP = "/verifyOTP";
+  static const String sendOTP = "/sendOTP";
+
+
 
   static getApplicationRoute() {
     return {
@@ -22,6 +26,10 @@ class AppRoute {
       homeRoute: (context) => const HomePage(),
       registerRoute: (context) => const MyRegister(),
       profileRoute: (context) => const UserProfilePage(),
+
+    
+
+
       hotelDetailsRoute: (context) {
         final hotelDetailsEntity =
             ModalRoute.of(context)?.settings.arguments as HotelDetailsEntity;

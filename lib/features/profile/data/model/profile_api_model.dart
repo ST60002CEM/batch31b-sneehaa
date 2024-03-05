@@ -11,9 +11,6 @@ class ProfileApiModel {
   final String firstName;
   final String lastName;
   final String email;
-  final String username;
-  final String address;
-  final String phone;
   final bool isAdmin;
   String? image;
 
@@ -22,9 +19,6 @@ class ProfileApiModel {
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.username,
-    required this.address,
-    required this.phone,
     required this.isAdmin,
     this.image,
   });
@@ -41,9 +35,6 @@ class ProfileApiModel {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      username: username,
-      address: address,
-      phone: phone,
       isAdmin: isAdmin,
       image: image ?? '',
     );
@@ -56,9 +47,6 @@ class ProfileApiModel {
       firstName: entity.firstName,
       lastName: entity.lastName,
       email: entity.email,
-      username: entity.username,
-      address: entity.address,
-      phone: entity.phone,
       isAdmin: entity.isAdmin,
       image: entity.image,
     );
