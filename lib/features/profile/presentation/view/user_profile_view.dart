@@ -34,19 +34,22 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFff6b6b), // Updated app bar color
         elevation: 0,
         title: const Text(
           'User Profile',
           style: TextStyle(
-            color: Colors.black87,
+            color: Color.fromARGB(221, 243, 240, 240),
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/home');
           },
@@ -122,10 +125,19 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        backgroundColor:
+                            const Color(0xFFff6b6b), // Button color
                       ),
                       onPressed: () async {},
-                      icon: const Icon(Iconsax.edit, size: 20.0),
-                      label: const Text('Edit Profile'),
+                      icon: const Icon(
+                        Iconsax.edit,
+                        size: 20.0,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        'Edit Profile',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
