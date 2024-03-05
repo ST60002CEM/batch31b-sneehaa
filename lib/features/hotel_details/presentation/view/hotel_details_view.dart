@@ -1,4 +1,4 @@
-import 'package:bookaway/features/hotel_details/presentation/view/booking.dart';
+import 'package:bookaway/features/bookings/presentation/view/book_hotel/hotel_book_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bookaway/core/common/widget/custom_navigation_bar.dart';
 import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
@@ -64,9 +64,14 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      showBookingForm = true;
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookHotelPage(
+                           hotelDetailsEntity: widget.hotelDetailsEntity,
+                            hotelId: widget.hotelDetailsEntity.hotelId),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -80,8 +85,6 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
                 ),
               ),
             ),
-            if (showBookingForm)
-              BookingForm(hotelId: widget.hotelDetailsEntity.hotelId),
           ],
         ),
       ),
@@ -93,7 +96,7 @@ class _HotelDetailsPageState extends State<HotelDetailsPage> {
               Navigator.pushReplacementNamed(context, '/home');
               break;
             case 1:
-              Navigator.pushReplacementNamed(context, '/favourites');
+              Navigator.pushReplacementNamed(context, '/viewbookedhotels');
               break;
             case 2:
               Navigator.pushReplacementNamed(context, '/profile');

@@ -19,8 +19,14 @@ class ApiEndpoints {
   static const String getBookings = '/api/booking';
   static const String verifyandUpdatePassword =
       "/verify-otp-and-update-password";
-
-  static String getHotelByIdUrl(String id) {
+      static String getHotelByIdUrl(String id) {
     return "$baseUrl$getHotelById/$id";
   }
+
+//  =================== Booking Routes===================
+
+   static const String bookingHotel = "/booking/book_hotel";
+  static const String getallbookings = "/booking/delete_booking";
+  static const String deleteBooking = "/booking/my-bookings";
+  
 }

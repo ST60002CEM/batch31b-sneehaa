@@ -1,29 +1,171 @@
-// import 'package:bookaway/config/constants/api_endpoints.dart';
-// import 'package:bookaway/core/failure/failure.dart';
-// import 'package:bookaway/features/bookings/data/model/booking_api_model.dart';
-// import 'package:dartz/dartz.dart';
-// import 'package:dio/dio.dart';
+import 'package:bookaway/core/common/provider/flutter_secure_storage.dart';
+import 'package:bookaway/core/network/remote/http_service.dart';
+import 'package:bookaway/features/bookings/data/model/booking_api_model.dart';
+import 'package:bookaway/features/bookings/domain/entity/booking_entity.dart';
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import '../../../../config/constants/api_endpoints.dart';
+import '../../../../core/failure/failure.dart';
 
-// class BookingRemoteDataSource {
-//   final Dio dio;
+final hotelBookingRemoteDataSourceProvider =
+    Provider<HotelBookingRemoteDataSource>(
+  (ref) => HotelBookingRemoteDataSource(
+    ref.read(httpServiceProvider),
+    ref.read(flutterSecureStorageProvider),
+  ),
+);
 
-//   BookingRemoteDataSource(this.dio);
+class HotelBookingRemoteDataSource {
+  final Dio dio;
+  final FlutterSecureStorage secureStorage;
 
-//   Future<Either<Failure, List<BookingApiModel>>> getBookings(int page) async {
-//     // Update the endpoint to get bookings
-//     const String endpoint = ApiEndpoints.getBookings;
+  HotelBookingRemoteDataSource(this.dio, this.secureStorage);
 
-//     try {
-//       Response response = await dio.get(endpoint, queryParameters: {
-//         'page': page,
-//       });
+  Future<Either<Failure, bool>> createBooking(
+      HotelBookingEntity hotelBookingEntity) async {
+    try {
+      final token = await secureStorage.read(key: "authenticationToken");
+      if (token == null) {
+        return Left(Failure(error: "Token not found"));
+      }
 
-//       final List<dynamic> data = response.data["bookings"];
-//       final bookings =
-//           data.map((json) => BookingApiModel.fromJson(json)).toList();
-//       return Right(bookings);
-//     } on DioException catch (e) {
-//       return Left(Failure(error: e.message.toString()));
-//     }
-//   }
-// }
+      final decodedToken = JwtDecoder.decode(token);
+      final userId = decodedToken['id'];
+      if (userId == null) {
+        return Left(Failure(error: "User ID not found in token"));
+      }
+
+      HotelBookingApiModel apiModel =
+          HotelBookingApiModel.fromEntity(hotelBookingEntity);
+
+      Response response = await dio.post(
+        ApiEndpoints.bookHotel,
+        data: {
+          "userId": userId,
+          "hotelId": apiModel.hotelId,
+          "checkInDate": apiModel.checkInDate,
+          "checkOutDate": apiModel.checkOutDate,
+          "adults": apiModel.adults,
+          "children": apiModel.children,
+          "rooms": apiModel.rooms,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return const Right(true);
+      } else {
+        return Left(
+          Failure(
+            error: response.data["message"],
+            statusCode: response.statusCode.toString(),
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return Left(
+        Failure(
+          error: e.error.toString(),
+          statusCode: e.response?.statusCode.toString() ?? '0',
+        ),
+      );
+    }
+  }
+
+  Future<Either<Failure, List<HotelBookingEntity>>> getBookings() async {
+    try {
+      final token = await secureStorage.read(key: "authenticationToken");
+      if (token == null) {
+        return Left(Failure(error: "Token not found"));
+      }
+
+      final decodedToken = JwtDecoder.decode(token);
+      final userId = decodedToken['id'];
+      if (userId == null) {
+        return Left(Failure(error: "User ID not found in token"));
+      }
+
+      Response response = await dio.get(
+        ApiEndpoints.getallbookings,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data.containsKey("bookings")) {
+          var bookingJsonList = response.data["bookings"] as List<dynamic>;
+          List<HotelBookingEntity> bookings = bookingJsonList
+              .map((booking) =>
+                  HotelBookingApiModel.fromJson(booking).toEntity())
+              .toList();
+          return Right(bookings);
+        } else {
+          return Left(
+            Failure(
+              error: "Bookings key not found in response data",
+              statusCode: response.statusCode.toString(),
+            ),
+          );
+        }
+      } else {
+        return Left(
+          Failure(
+            error: response.data["message"],
+            statusCode: response.statusCode.toString(),
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return Left(
+        Failure(
+          error: e.error.toString(),
+          statusCode: e.response?.statusCode.toString() ?? '0',
+        ),
+      );
+    }
+  }
+
+  Future<Either<Failure, bool>> deleteBooking(String bookingId) async {
+    try {
+      final token = await secureStorage.read(key: "authenticationToken");
+      if (token == null) {
+        return Left(Failure(error: "Token not found"));
+      }
+
+      Response response = await dio.delete(
+        "${ApiEndpoints.deleteBooking}/$bookingId",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return const Right(true);
+      } else {
+        return Left(
+          Failure(
+            error: response.data["message"],
+            statusCode: response.statusCode.toString(),
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      return Left(
+        Failure(
+          error: e.error.toString(),
+          statusCode: e.response?.statusCode.toString() ?? '0',
+        ),
+      );
+    }
+  }
+}

@@ -22,6 +22,10 @@ class HiveService {
     return hotels;
   }
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   // ======================== Insert Dummy Data ========================
   Future<void> addDummyHotels() async {
     // Check if the hotel box is empty
