@@ -1,3 +1,4 @@
+import 'package:bookaway/core/common/widget/custom_navigation_bar.dart';
 import 'package:bookaway/core/common/widget/userProfileShimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await ref.read(profileViewModelProvider.notifier).getProfile();
 
       Future.delayed(const Duration(seconds: 1), () {});
@@ -26,15 +27,10 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFff6b6b), // Updated app bar color
+        backgroundColor: const Color(0xFFff6b6b),
         elevation: 0,
         title: const Text(
           'User Profile',
@@ -143,6 +139,22 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                 ],
               ),
             );
+          }
+        },
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 2,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/home');
+              break;
+            case 1:
+              Navigator.pushReplacementNamed(context, '/bookings');
+              break;
+            case 2:
+              Navigator.pushReplacementNamed(context, '/viewbookedhotels');
+              break;
           }
         },
       ),
