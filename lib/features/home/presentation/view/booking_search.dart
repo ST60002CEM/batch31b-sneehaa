@@ -35,18 +35,18 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Find your perfect stay',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           TextField(
             decoration: InputDecoration(
-              hintText: 'Location',
-              prefixIcon: Icon(Icons.location_on),
+              hintText: 'Hotels',
+              prefixIcon: const Icon(Icons.location_on),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -57,7 +57,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
               });
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
@@ -66,7 +66,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
                   child: InputDecorator(
                     decoration: InputDecoration(
                       labelText: 'Check-in',
-                      prefixIcon: Icon(Icons.calendar_today),
+                      prefixIcon: const Icon(Icons.calendar_today),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -77,14 +77,14 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
                   ),
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: InkWell(
                   onTap: () => _selectDate(context, false),
                   child: InputDecorator(
                     decoration: InputDecoration(
                       labelText: 'Check-out',
-                      prefixIcon: Icon(Icons.calendar_today),
+                      prefixIcon: const Icon(Icons.calendar_today),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -97,7 +97,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
@@ -105,7 +105,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Adults',
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -117,13 +117,13 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
                   },
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Children',
-                    prefixIcon: Icon(Icons.child_friendly),
+                    prefixIcon: const Icon(Icons.child_friendly),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -137,12 +137,12 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           TextField(
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Rooms',
-              prefixIcon: Icon(Icons.hotel),
+              prefixIcon: const Icon(Icons.hotel),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -153,13 +153,13 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
               });
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               widget.onSearch(_location, _checkInDate, _checkOutDate, _adults,
                   _children, _rooms);
             },
-            child: Text('Search'),
+            child: const Text('Search'),
           ),
         ],
       ),
@@ -179,7 +179,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
         if (isCheckInDate) {
           _checkInDate = picked;
           if (_checkOutDate.isBefore(_checkInDate)) {
-            _checkOutDate = _checkInDate.add(Duration(days: 1));
+            _checkOutDate = _checkInDate.add(const Duration(days: 1));
           }
         } else {
           _checkOutDate = picked;
