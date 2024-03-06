@@ -1,4 +1,6 @@
 PODS:
+  - all_sensors (0.0.1):
+    - Flutter
   - all_sensors2 (1.0.1):
     - Flutter
   - connectivity_plus (0.0.1):
@@ -20,6 +22,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - all_sensors (from `.symlinks/plugins/all_sensors/ios`)
   - all_sensors2 (from `.symlinks/plugins/all_sensors2/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
@@ -34,6 +37,8 @@ SPEC REPOS:
     - ReachabilitySwift
 
 EXTERNAL SOURCES:
+  all_sensors:
+    :path: ".symlinks/plugins/all_sensors/ios"
   all_sensors2:
     :path: ".symlinks/plugins/all_sensors2/ios"
   connectivity_plus:
@@ -52,6 +57,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
+  all_sensors: 13f46502204bebbd1e06b65ff3d7cdaa03d88b26
   all_sensors2: 5e204ae87a72b554b2df6c4de741c09031b8e64e
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7

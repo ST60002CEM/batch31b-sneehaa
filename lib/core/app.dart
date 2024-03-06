@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       title: "BookAway",
       builder: EasyLoading.init(),
       theme: getApplicationTheme(),
-      initialRoute: AppRoute.homeRoute,
+      initialRoute: AppRoute.loginRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }

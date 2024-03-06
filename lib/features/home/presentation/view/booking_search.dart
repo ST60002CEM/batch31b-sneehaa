@@ -1,9 +1,11 @@
-import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:bookaway/features/home/domain/entity/home_entity.dart';
 import 'package:bookaway/features/hotel_details/presentation/view/hotel_details_view.dart';
+import 'package:flutter/material.dart';
+import 'package:bookaway/features/hotel_details/domain/entity/hotel_details.dart';
+import 'package:all_sensors2/all_sensors2.dart';
 
-class HotelSearchBar extends StatelessWidget {
+class HotelSearchBar extends StatefulWidget {
   final TextEditingController searchController;
   final ValueChanged<String> onChanged;
   final List<HotelEntity> hotels;
@@ -14,6 +16,69 @@ class HotelSearchBar extends StatelessWidget {
     required this.onChanged,
     required this.hotels,
   }) : super(key: key);
+
+  @override
+  _HotelSearchBarState createState() => _HotelSearchBarState();
+}
+
+class _HotelSearchBarState extends State<HotelSearchBar> {
+  List<double> _accelerometerValue = [];
+  late StreamSubscription<dynamic> _streamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _streamSubscription = accelerometerEvents!.listen((event) {
+      setState(() {
+        _accelerometerValue = [event.x, event.y, event.z];
+        if (_shouldPerformSearch()) {
+          performSearch();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose();
+  }
+
+  bool _shouldPerformSearch() {
+    return _accelerometerValue[0].abs() > 10 ||
+        _accelerometerValue[1].abs() > 10 ||
+        _accelerometerValue[2].abs() > 10;
+  }
+
+  void performSearch() {
+    String searchText = widget.searchController.text;
+    HotelEntity? selectedHotel;
+    try {
+      selectedHotel = widget.hotels.firstWhere(
+        (hotel) => hotel.hotelName.toLowerCase() == searchText.toLowerCase(),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Hotel not found')),
+      );
+      return;
+    }
+    HotelDetailsEntity hotelDetailsEntity = HotelDetailsEntity(
+      hotelId: selectedHotel!.hotelId ?? '',
+      hotelName: selectedHotel.hotelName,
+      hotelPrice: selectedHotel.hotelPrice,
+      hotelDescription: selectedHotel.hotelDescription,
+      hotelCategory: selectedHotel.hotelCategory,
+      hotelImageUrl: selectedHotel.hotelImageUrl,
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            HotelDetailsPage(hotelDetailsEntity: hotelDetailsEntity),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,41 +100,12 @@ class HotelSearchBar extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () {
-              String searchText = searchController.text;
-              HotelEntity? selectedHotel;
-              try {
-                selectedHotel = hotels.firstWhere(
-                  (hotel) =>
-                      hotel.hotelName.toLowerCase() == searchText.toLowerCase(),
-                );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Hotel not found')),
-                );
-                return;
-              }
-              HotelDetailsEntity hotelDetailsEntity = HotelDetailsEntity(
-                hotelId: selectedHotel.hotelId ?? '',
-                hotelName: selectedHotel.hotelName,
-                hotelPrice: selectedHotel.hotelPrice,
-                hotelDescription: selectedHotel.hotelDescription,
-                hotelCategory: selectedHotel.hotelCategory,
-                hotelImageUrl: selectedHotel.hotelImageUrl,
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      HotelDetailsPage(hotelDetailsEntity: hotelDetailsEntity),
-                ),
-              );
-            },
+            onPressed: performSearch,
           ),
           Expanded(
             child: TextField(
-              controller: searchController,
-              onChanged: onChanged,
+              controller: widget.searchController,
+              onChanged: widget.onChanged,
               decoration: const InputDecoration(
                 hintText: 'Search for hotels',
                 border: InputBorder.none,
