@@ -1,16 +1,27 @@
-# bookaway
+# Bookaway
+Bookaway is a mobile app created using Flutter that gives you a simplified platform for booking rooms for your vacation outings.  Whether you're planning a weekend escape, a business trip, or a long vacation, Bookaway offers a variety of alternatives for finding the ideal location to stay.
 
-A new Flutter project.
+# Getting Started
 
-## Getting Started
+To get started with Bookaway, follow these steps:
 
-This project is a starting point for a Flutter application.
+## Clone the Repository: Clone this repository to your local machine using Git:
+git clone https://github.com/ST60002CEM/batch31b-sneehaa.git 
 
-A few resources to get you started if this is your first Flutter project:
+## Install Dependencies: Navigate into the project directory and install the required dependencies using Flutter's package manager, pub:
+cd bookaway
+flutter pub get
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Run the App: Once the dependencies are installed, you can run the app on a connected device or emulator using the following command:
+flutter run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Explore and Customize
+
+# License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+# Acknowledgments
+I would like to express my gratitude to the Flutter community for providing valuable resources, documentation, and support throughout the development of this project.
+
+# Screenshots Section
+![login](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/6dfe28b4-9281-4c1f-a98e-f1457434d4b8)
