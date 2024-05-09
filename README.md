@@ -25,3 +25,7 @@ I would like to express my gratitude to the Flutter community for providing valu
 
 # Screenshots Section
 ![login](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/6dfe28b4-9281-4c1f-a98e-f1457434d4b8)
+![home](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/42d43b63-5434-4bc9-ba72-c312a3cf1953)
+![bookings](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/405150b7-ddd5-44aa-9090-d22f671be642)
+![checkout](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/59ea79b4-55f9-41d1-9877-728f22f21259)
+![verifyOTP](https://github.com/ST60002CEM/batch31b-sneehaa/assets/94774019/67d2af87-8a7f-44d6-90be-624ef2368957)
